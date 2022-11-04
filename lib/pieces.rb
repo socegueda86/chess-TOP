@@ -1,43 +1,104 @@
-class Pieces
-  def initialize(game)
-    @game = game
+class Pieces 
+
+    
+  def icon_define
+        
+    case self
+    when Pawn
+      @color == 'white'? '♟︎' : '♙'
+    when King
+      @color == 'white'? '♚' : '♔'
+    when Queen
+      @color == 'white'? '♛' : '♕'
+    when Bishop
+      @color == 'white'? '♝' : '♗'
+    when Tower
+      @color == 'white'? '♜' : '♖'
+    when Knight
+      @color == 'white'? '♞' : '♘'
+    else
+      'E'
+    end
   end
+  
 end
 
 class King < Pieces
-  def initialize(color)
-    @color
-  end  
+  
+  def initialize(game = nil, color)
+    @game = game
+    @color = color
+    @icon = icon_define
+  end
+  
+  def to_s
+    @icon 
+  end
 end
 
 class Queen < Pieces
-  def initialize(color)
-    @color
-  end  
+  
+  def initialize(game, color)
+    @game = game
+    @color = color
+    @icon = icon_define       
+  end
+
+  def to_s
+    @icon 
+  end
 end
 
 class Knight < Pieces
-  def initialize(color)
-    @color
-  end  
+  
+  def initialize(game, color)
+    @game = game
+    @color = color
+    @icon = icon_define       
+  end
+
+  def to_s
+    @icon 
+  end
 end
 
 
 class Pawn < Pieces
-  def initialize(color)
-    @color
-  end    
+  
+  def initialize(game, color)
+    @game = game
+    @color = color
+    @icon = icon_define       
+  end
+
+  def to_s
+    @icon 
+  end
 end
 
-
 class Bishop < Pieces
-  def initialize(color)
-    @color
-  end  
+  
+  def initialize(game, color)
+    @game = game
+    @color = color
+    @icon = icon_define       
+  end
+
+  def to_s
+    @icon 
+  end
 end
 
 class Tower < Pieces
-  def initialize(color)
-    @color
-  end  
+  
+  def initialize(game, color)
+    @game = game
+    @color = color
+    @icon = icon_define       
+  end
+
+  def to_s
+    @icon 
+  end
 end
+

@@ -1,4 +1,4 @@
-Module DrawBoard
+module DrawBoard
 
 def draw_board_whites_perspective
   row_separator = "  +---+---+---+---+---+---+---+---+"

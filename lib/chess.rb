@@ -1,6 +1,8 @@
 require_relative 'pieces.rb'
+require_relative 'draw_board_module.rb'
 
 class Game
+  include DrawBoard
   attr_reader :current_player
   
   def initialize(player_1_class, player_2_class)
@@ -11,12 +13,31 @@ class Game
   end
 
   def create_board
-    (1..8).map  { |x| Array.new(8) }
+    board = (1..8).map  { |x| Array.new(8) }
+
+    board[0] = [Tower.new( self, 'white'), Knight.new( self, 'white'), Bishop.new( self, 'white'),
+                Queen.new( self, 'white'),King.new( self, 'white'), Bishop.new( self, 'white'),
+                Knight.new( self, 'white'), Tower.new( self, 'white')]
+
+    board[1] = [Pawn.new(self, 'white'), Pawn.new(self, 'white'), Pawn.new(self, 'white'), 
+                Pawn.new(self, 'white'), Pawn.new(self, 'white'), Pawn.new(self, 'white'), 
+                Pawn.new(self, 'white'), Pawn.new(self, 'white')]
+    
+    board[8] = [Tower.new( self, 'black'), Knight.new( self, 'black'), Bishop.new( self, 'black'),
+                Queen.new( self, 'black'),King.new( self, 'black'), Bishop.new( self, 'black'),
+                Knight.new( self, 'black'), Tower.new( self, 'black')]
+    
+    board[7] = [Pawn.new(self, 'black'), Pawn.new(self, 'black'), Pawn.new(self, 'black'), 
+                Pawn.new(self, 'black'), Pawn.new(self, 'black'), Pawn.new(self, 'black'), 
+                Pawn.new(self, 'black'), Pawn.new(self, 'black')]
+
+    board
   end
 
-  # will create test when i have added the pieces icons
+  # will create test when i have added the pieces icons pending
   def draw_board 
-    if player_1_class.class == ComputerPlayer && player_1_class.class == HumanPlayer
+    
+    if @players[0].class == ComputerPlayer && @players[1].class == HumanPlayer
       draw_board_blacks_perspective
     else
       draw_board_whites_perspective
@@ -42,3 +63,10 @@ class ComputerPlayer;end
 
 
 
+game = Game.new(HumanPlayer,HumanPlayer)
+
+game.draw_board
+
+game.switch_player
+
+game.draw_board
