@@ -1,3 +1,5 @@
+require_relative 'pieces.rb'
+
 class Game
   def initialize(player_1_class, player_2_class)
     @board = create_board()
