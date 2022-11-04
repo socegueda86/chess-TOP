@@ -42,3 +42,4 @@ class Pieces
     @game = game
   end
 end
+
