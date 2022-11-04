@@ -1,3 +1,9 @@
+class Pieces
+  def initialize(game)
+    @game = game
+  end
+end
+
 class King < Pieces
   def initialize(color)
     @color

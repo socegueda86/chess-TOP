@@ -1,8 +1,10 @@
-Rspec.describe Game
+require '../lib/chess.rb'
+RSpec.describe Game do
   describe '#create_board' do
-    let(:double_player_1) { double()}
-    let(:double_player_2) { double()}
+    let(:double_player_1) { double('Double 1', new: 'double_player_1.new return value')}
+    let(:double_player_2) { double('Double 2', new: 'double_player_2.new return value')}
     subject(:game) {Game.new(double_player_1,double_player_2)}
+    
     it 'Creates an Array with 8 elements' do
       board = game.instance_variable_get(:@board)
       length = board.length
@@ -13,6 +15,24 @@ Rspec.describe Game
       board = game.instance_variable_get(:@board)
       result = board.all? { |row| row.length == 8 }
       expect(result).to be true
+    end
+  end
+
+  describe '#switch_player' do
+    
+    let(:double_player_1) { double('Double 1', new: 'double_player_1')}
+    let(:double_player_2) { double('Double 2', new: 'double_player_2')}
+    subject(:game) {Game.new(double_player_1,double_player_2)}
+    
+
+    it 'returns double_player_2 when the current_player is double_player_1' do
+      allow(game).to receive(:rand).and_return(0)
+      expect{ game.switch_player }.to change{ game.current_player}.from(double_player_1.new).to(double_player_2.new)
+    end
+
+    it 'returns double_player_1 when the current_player is double_player_2' do
+      allow(game).to receive(:rand).and_return(1)
+      expect{ game.switch_player }.to change{ game.current_player}.from(double_player_2.new).to(double_player_1.new)
     end
 
   end

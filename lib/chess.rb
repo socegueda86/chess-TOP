@@ -1,12 +1,13 @@
 require_relative 'pieces.rb'
 
 class Game
+  attr_reader :current_player
+  
   def initialize(player_1_class, player_2_class)
     @board = create_board()
     @players = [player_1_class.new, player_2_class.new]
     @white_pieces = @players[rand(0..1)]
     @current_player = @white_pieces
-
   end
 
   def create_board
@@ -39,9 +40,5 @@ class Player;end
 class HumanPlayer;end
 class ComputerPlayer;end
 
-class Pieces
-  def initialize(game)
-    @game = game
-  end
-end
+
 
