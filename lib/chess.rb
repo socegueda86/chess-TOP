@@ -8,5 +8,18 @@ class Game
     (1..8).map  { |x| Array.new(8) }
   end
 
-  
+  # will create test when i have added the pieces icons
+  def draw_board 
+    if player_1_class.class == ComputerPlayer && player_1_class.class == HumanPlayer
+      draw_board_blacks_perspective
+    else
+      draw_board_whites_perspective
+    end
+  end
 end
+
+
+class Player;end
+
+class HumanPlayer;end
+class ComputerPlayer;end
