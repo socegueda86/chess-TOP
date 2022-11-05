@@ -11,6 +11,3 @@ class Pawn < Pieces
     @icon 
   end
 end
-
-
-

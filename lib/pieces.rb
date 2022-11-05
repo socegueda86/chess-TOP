@@ -1,7 +1,8 @@
+
+
 class Pieces 
 
-    
-  def icon_define
+   def icon_define
         
     case self
     when Pawn
@@ -22,10 +23,3 @@ class Pieces
   end
   
 end
-
-
-
-
-
-
-

@@ -1,5 +1,13 @@
 require_relative 'pieces.rb'
 require_relative 'draw_board_module.rb'
+require_relative 'knight.rb'
+require_relative 'tower.rb'
+require_relative 'bishop.rb'
+require_relative 'pawn.rb'
+require_relative 'queen.rb'
+require_relative 'king.rb'
+
+
 
 class Game
   include DrawBoard
@@ -79,7 +87,7 @@ class ComputerPlayer;end
 
 
 
-#game = Game.new(HumanPlayer,HumanPlayer)
-#game.draw_board
+game = Game.new(HumanPlayer,HumanPlayer)
+game.draw_board
 #game.switch_player
 #game.draw_board
