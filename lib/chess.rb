@@ -12,27 +12,43 @@ class Game
     @current_player = @white_pieces
   end
 
+  
   def create_board
     board = (1..8).map  { |x| Array.new(8) }
-
-    board[0] = [Tower.new( self, 'white'), Knight.new( self, 'white'), Bishop.new( self, 'white'),
-                Queen.new( self, 'white'),King.new( self, 'white'), Bishop.new( self, 'white'),
-                Knight.new( self, 'white'), Tower.new( self, 'white')]
-
-    board[1] = [Pawn.new(self, 'white'), Pawn.new(self, 'white'), Pawn.new(self, 'white'), 
-                Pawn.new(self, 'white'), Pawn.new(self, 'white'), Pawn.new(self, 'white'), 
-                Pawn.new(self, 'white'), Pawn.new(self, 'white')]
     
-    board[8] = [Tower.new( self, 'black'), Knight.new( self, 'black'), Bishop.new( self, 'black'),
-                Queen.new( self, 'black'),King.new( self, 'black'), Bishop.new( self, 'black'),
-                Knight.new( self, 'black'), Tower.new( self, 'black')]
+    board = (1..8).map  { |x| Array.new(8) }
     
-    board[7] = [Pawn.new(self, 'black'), Pawn.new(self, 'black'), Pawn.new(self, 'black'), 
-                Pawn.new(self, 'black'), Pawn.new(self, 'black'), Pawn.new(self, 'black'), 
-                Pawn.new(self, 'black'), Pawn.new(self, 'black')]
-
+    row_1 = %w(T H B Q K B H T)
+    row_2 = %w(P P P P P P P P)
+    row_7 = %w(P P P P P P P P)
+    row_8 = %w(T H B Q K B H T)
+    
+    board[0] = row_1.map.with_index { |element, index| piece_builder(element, 'white', [0, index]) }
+    board[1] = row_2.map.with_index { |element, index| piece_builder(element, 'white', [1, index]) }
+    board[6] = row_7.map.with_index { |element, index| piece_builder(element, 'black', [6, index]) }
+    board[7] = row_8.map.with_index { |element, index| piece_builder(element, 'black', [7, index]) }
+    
     board
   end
+
+  def piece_builder(element, color, pos)
+
+    if element  == 'T'
+      Tower.new( self, color,pos)   
+    elsif element  == 'H'
+      Knight.new( self, color, pos)
+    elsif element  == 'B'
+      Bishop.new( self, color, pos)
+    elsif element  == 'Q'
+      Queen.new( self, color, pos)
+    elsif element  == 'K'
+      King.new( self, color, pos)
+    elsif element  == 'P'
+      Pawn.new( self, color, pos)
+    else
+      raise StandardError.new "Problem in the #board_creation"
+    end
+  end 
 
   # will create test when i have added the pieces icons pending
   def draw_board 

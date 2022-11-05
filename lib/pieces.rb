@@ -25,10 +25,11 @@ end
 
 class King < Pieces
   
-  def initialize(game = nil, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
     @icon = icon_define
+    @piece_position
   end
   
   def to_s
@@ -38,10 +39,11 @@ end
 
 class Queen < Pieces
   
-  def initialize(game, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
-    @icon = icon_define       
+    @icon = icon_define
+    @piece_position
   end
 
   def to_s
@@ -51,10 +53,11 @@ end
 
 class Knight < Pieces
   
-  def initialize(game, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
-    @icon = icon_define       
+    @icon = icon_define
+    @piece_position
   end
 
   def to_s
@@ -65,10 +68,11 @@ end
 
 class Pawn < Pieces
   
-  def initialize(game, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
-    @icon = icon_define       
+    @icon = icon_define
+    @piece_position
   end
 
   def to_s
@@ -78,10 +82,11 @@ end
 
 class Bishop < Pieces
   
-  def initialize(game, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
-    @icon = icon_define       
+    @icon = icon_define
+    @piece_position
   end
 
   def to_s
@@ -91,10 +96,11 @@ end
 
 class Tower < Pieces
   
-  def initialize(game, color)
+  def initialize(game, color, piece_position)
     @game = game
     @color = color
-    @icon = icon_define       
+    @icon = icon_define
+    @piece_position
   end
 
   def to_s
