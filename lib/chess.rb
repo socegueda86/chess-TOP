@@ -79,10 +79,7 @@ class ComputerPlayer;end
 
 
 
-game = Game.new(HumanPlayer,HumanPlayer)
-
-game.draw_board
-
-game.switch_player
-
-game.draw_board
+#game = Game.new(HumanPlayer,HumanPlayer)
+#game.draw_board
+#game.switch_player
+#game.draw_board

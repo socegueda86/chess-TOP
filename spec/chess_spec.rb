@@ -27,12 +27,12 @@ RSpec.describe Game do
 
     it 'returns double_player_2 when the current_player is double_player_1' do
       allow(game).to receive(:rand).and_return(0)
-      expect{ game.switch_player }.to change{ game.current_player}.from(double_player_1.new).to(double_player_2.new)
+      expect{ game.switch_player }.to change{ game.current_player }.from(double_player_1.new).to(double_player_2.new)
     end
 
     it 'returns double_player_1 when the current_player is double_player_2' do
       allow(game).to receive(:rand).and_return(1)
-      expect{ game.switch_player }.to change{ game.current_player}.from(double_player_2.new).to(double_player_1.new)
+      expect{ game.switch_player }.to change{ game.current_player }.from(double_player_2.new).to(double_player_1.new)
     end
 
   end
