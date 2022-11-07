@@ -1,12 +1,5 @@
 require_relative 'pieces.rb'
 require_relative 'draw_board_module.rb'
-require_relative 'knight.rb'
-require_relative 'tower.rb'
-require_relative 'bishop.rb'
-require_relative 'pawn.rb'
-require_relative 'queen.rb'
-require_relative 'king.rb'
-
 
 
 class Game
@@ -17,7 +10,7 @@ class Game
     @colors = [:white, :black]
     @board = create_board()
     @players = [player_1_class.new, player_2_class.new]
-    @white_pieces = @players[1] #@players[rand(0..1)]
+    @white_pieces = @players[0] #@players[rand(0..1)]
     @current_player = @white_pieces
     
   end
@@ -44,25 +37,24 @@ class Game
   def piece_builder(element, color, pos)
 
     if element  == 'T'
-      Tower.new( self, color,pos)   
+      Piece.new( self, :tower, color, pos)   
     elsif element  == 'H'
-      Knight.new( self, color, pos)
+      Piece.new( self, :knight, color, pos)
     elsif element  == 'B'
-      Bishop.new( self, color, pos)
+      Piece.new( self, :bishop, color, pos)
     elsif element  == 'Q'
-      Queen.new( self, color, pos)
+      Piece.new( self, :queen, color, pos)
     elsif element  == 'K'
-      King.new( self, color, pos)
+      Piece.new( self, :king, color, pos)
     elsif element  == 'P'
-      Pawn.new( self, color, pos)
+      Piece.new( self, :pawn, color, pos)
     else
       raise StandardError.new "Problem in the #board_creation"
     end
   end 
 
-  # will create test when i have added the pieces icons pending
-  def draw_board 
-    
+  # debuggin erase-comment will create test when i have added the pieces icons pending
+  def draw_board     
     if @players[0].class == ComputerPlayer && @players[1].class == HumanPlayer
       draw_board_blacks_perspective
     else
@@ -89,8 +81,8 @@ class ComputerPlayer;end
 
 
 
-#game = Game.new(HumanPlayer,HumanPlayer)
-#game.draw_board
+game = Game.new(HumanPlayer,HumanPlayer)
+game.draw_board
 #game.switch_player
 #game.draw_board
 
