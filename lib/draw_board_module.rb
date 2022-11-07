@@ -19,8 +19,17 @@ def draw_board_blacks_perspective
   puts row_separator
   puts "    H   G   F   E   D   C   B   A  "
 end
- 
-#def draw_board_only_player2_is_humanM; end
+
+#erase this method or comment it out
+def debugging_draw_board(board)
+  row_separator = "  +---+---+---+---+---+---+---+---+"
+    board.reverse.each_with_index do |row, i|
+      puts row_separator
+      puts "#{ 8 - i } | #{row[0].nil? ? " " : row[0] } | #{row[1].nil? ? " " : row[1] } | #{row[2].nil? ? " " : row[2] } | #{row[3].nil? ? " " : row[3] } | #{row[4].nil? ? " " : row[4] } | #{row[5].nil? ? " " : row[5] } | #{row[6].nil? ? " " : row[6] } | #{row[7].nil? ? " " : row[7] } |"
+      end
+    puts row_separator
+    puts "    A   B   C   D   E   F   G   H  "
+end 
 
 
 end

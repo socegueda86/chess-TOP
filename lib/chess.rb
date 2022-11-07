@@ -11,13 +11,15 @@ require_relative 'king.rb'
 
 class Game
   include DrawBoard
-  attr_reader :current_player
+  attr_reader :current_player, :board
   
   def initialize(player_1_class, player_2_class)
+    @colors = [:white, :black]
     @board = create_board()
     @players = [player_1_class.new, player_2_class.new]
-    @white_pieces = @players[rand(0..1)]
+    @white_pieces = @players[1] #@players[rand(0..1)]
     @current_player = @white_pieces
+    
   end
 
   
@@ -31,10 +33,10 @@ class Game
     row_7 = %w(P P P P P P P P)
     row_8 = %w(T H B Q K B H T)
     
-    board[0] = row_1.map.with_index { |element, index| piece_builder(element, 'white', [0, index]) }
-    board[1] = row_2.map.with_index { |element, index| piece_builder(element, 'white', [1, index]) }
-    board[6] = row_7.map.with_index { |element, index| piece_builder(element, 'black', [6, index]) }
-    board[7] = row_8.map.with_index { |element, index| piece_builder(element, 'black', [7, index]) }
+    board[0] = row_1.map.with_index { |element, index| piece_builder(element, @colors[0], [0, index]) }
+    board[1] = row_2.map.with_index { |element, index| piece_builder(element, @colors[0], [1, index]) }
+    board[6] = row_7.map.with_index { |element, index| piece_builder(element, @colors[1], [6, index]) }
+    board[7] = row_8.map.with_index { |element, index| piece_builder(element, @colors[1], [7, index]) }
     
     board
   end
@@ -87,7 +89,14 @@ class ComputerPlayer;end
 
 
 
-game = Game.new(HumanPlayer,HumanPlayer)
-game.draw_board
+#game = Game.new(HumanPlayer,HumanPlayer)
+#game.draw_board
 #game.switch_player
 #game.draw_board
+
+
+
+
+#game =  Game.new(HumanPlayer,HumanPlayer)
+#bishop = Bishop.new(game, 'white', [3,3] )
+#bishop.available_moves
