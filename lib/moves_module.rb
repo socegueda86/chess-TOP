@@ -16,7 +16,6 @@ module MovesModule
     free_squares_array = []
     capture_squares_array = []
     
-
     directions.each do |direction| 
       free_squares, capture_squares = piece_possible_moves(directions) ### add thetype (knight, queen etc)
       free_squares_array << free_squares
@@ -27,10 +26,10 @@ module MovesModule
   end
 
   def piece_possible_moves(directions)
-    return possible_moves_queen_tower_bishop_knight(directions) if [:bishop, :tower, :queen, :knight].include?(@piece_type)
+    return possible_moves_queen_tower_bishop_knight(directions) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
   end  
 
-  def possible_moves_queen_tower_bishop_knight(direction)
+  def possible_moves_queen_tower_bishop_knight_king(direction)
     row = @piece_position[0]
     column = @piece_position[1]
     free_squares = []
@@ -41,16 +40,29 @@ module MovesModule
       column += direction_summands(direction)[1]
       
       break if same_color_piece?(row, column)
-      break capture_squares << [row, col, @game.board[row][col]] if opponent_color_piece?(row, column)
+      break capture_squares << [row, col, @game.board[row][col]] if opponent_color_piece?(row, column) || self.class != King
+      break if opponent_color_piece?(row, column) && self.class != King
+
+      #break if check_for_checks(row,colum)
+
       free_squares << [row, column] if @game.board[row][column].nil?
-      break if @piece_type == :knight
+      break if self.class == Knight|| self.class == King
     end
   
     [free_squares, capture_squares]
   end
 
-  def king_movements
-  end
+  def check_for_checks(row,colum)
+
+  #def castling_right
+  #  if @game.board[@piece_position[0]][]
+  #end
+
+  #def castling_left
+  #check_for_checks
+  #  if @first_move == True ||
+  #end
+   end
 
   def next_move_inside_the_board?(row, column, direction)
     return false if row + direction_summands(direction)[0] > 7 || column + direction_summands(direction)[1] > 7

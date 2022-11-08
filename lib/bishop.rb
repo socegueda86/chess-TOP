@@ -1,9 +1,9 @@
 
 require_relative './draw_board_module.rb'  #erase this just for debugging
-require_relative './pieces.rb'
+#require_relative './pieces.rb'
 require_relative './moves_module.rb'
 
-class Bishop < Piece
+class Bishop < Pieces
 
   include DrawBoard #erase this just for debugging
   include MovesModule
@@ -19,8 +19,12 @@ class Bishop < Piece
     #for each piece this won't be necessary
   end
 
+
+
+
   def to_s
     @icon 
   end
 end
+
 

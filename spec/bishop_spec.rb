@@ -29,12 +29,13 @@ RSpec.describe Bishop do
   describe '#available_moves' do
 
     context 'When the bishop is at [0,0]' do
+      DIAGONAL = [:up_right, :down_right, :up_left, :down_left]
       board = (1..8).map  { |x| Array.new(8) }
       let(:game) { double('Game Double', board: board)}
       subject(:bishop) { Bishop.new( game, :white, [3,3])}
 
       it 'returns the an arrray with all posible squares to move' do
-        expect(bishop.available_moves[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
+        expect(bishop.available_moves(DIAGONAL)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
       end
     end
   

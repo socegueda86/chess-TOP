@@ -1,3 +1,5 @@
+require_relative 'pieces.rb'
+
 class King < Pieces
   
   def initialize(game, color, piece_position)

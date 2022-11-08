@@ -1,5 +1,11 @@
 require_relative 'pieces.rb'
 require_relative 'draw_board_module.rb'
+require_relative 'tower.rb'
+require_relative 'king.rb'
+require_relative 'queen.rb' 
+require_relative 'pawn.rb'
+require_relative 'bishop.rb'
+require_relative 'knight.rb'
 
 
 class Game
@@ -37,17 +43,17 @@ class Game
   def piece_builder(element, color, pos)
 
     if element  == 'T'
-      Piece.new( self, :tower, color, pos)   
+      Tower.new( self, color, pos)   
     elsif element  == 'H'
-      Piece.new( self, :knight, color, pos)
+      Knight.new( self, color, pos)
     elsif element  == 'B'
-      Piece.new( self, :bishop, color, pos)
+      Bishop.new( self, color, pos)
     elsif element  == 'Q'
-      Piece.new( self, :queen, color, pos)
+      Queen.new( self, color, pos)
     elsif element  == 'K'
-      Piece.new( self, :king, color, pos)
+      King.new( self, color, pos)
     elsif element  == 'P'
-      Piece.new( self, :pawn, color, pos)
+      Pawn.new( self, color, pos)
     else
       raise StandardError.new "Problem in the #board_creation"
     end
@@ -81,6 +87,8 @@ class ComputerPlayer;end
 
 
 
+
+
 game = Game.new(HumanPlayer,HumanPlayer)
 game.draw_board
 #game.switch_player
@@ -90,5 +98,6 @@ game.draw_board
 
 
 #game =  Game.new(HumanPlayer,HumanPlayer)
-#bishop = Bishop.new(game, 'white', [3,3] )
+bishop = Bishop.new(game, 'white', [3,3] )
+bishop.tell_class
 #bishop.available_moves

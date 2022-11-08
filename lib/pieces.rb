@@ -1,24 +1,22 @@
 require_relative './draw_board_module.rb' #erase-line this just for debugging
 require_relative './moves_module.rb'
-class Piece
+
+class Pieces
 
   include DrawBoard #erase-line this just for debugging
   include MovesModule
-  attr_reader :color
-
-  DIAGONAL = [:up_right, :down_right, :up_left, :down_left]
-  STRAIGHT = [:up, :down, :right, :left]
-  KNIGHT_MOVES = [:knight_up_right, :knight_right_up, :knight_right_down,
-                  :knight_down_right, :knight_down_left, :knight_left_down,
-                  :knight_left_up, :knight_up_left]
+  attr_reader :color, :first_move
 
   
-  def initialize(game, piece, color, piece_position)
+
+  
+  def initialize(game, piece_type, color, piece_position)
     @game = game
-    @piece = piece
+    @piece_type = piece_type
     @color = color
     @icon ||= icon_define
     @piece_position = piece_position
+    @first_move = first_move
   end
 
   def to_s
@@ -27,18 +25,18 @@ class Piece
 
    def icon_define
         
-    case @piece
-    when :pawn
+    case self
+    when Pawn
       @color == :white ? '♟︎' : '♙'
-    when :king
+    when King
       @color == :white ? '♚' : '♔'
-    when :queen
+    when Queen
       @color == :white ? '♛' : '♕'
-    when :bishop
+    when Bishop
       @color == :white ? '♝' : '♗'
-    when :tower
+    when Tower
       @color == :white ? '♜' : '♖'
-    when :knight
+    when Knight
       @color == :white ? '♞' : '♘'
     else
       'E'
