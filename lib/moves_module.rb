@@ -11,6 +11,7 @@ module MovesModule
   KNIGHT_MOVES = [:knight_up_right, :knight_right_up, :knight_right_down,
                   :knight_down_right, :knight_down_left, :knight_left_down,
                   :knight_left_up, :knight_up_left]
+  
 
   def available_moves(directions)
     free_squares_array = []
@@ -39,11 +40,13 @@ module MovesModule
       row += direction_summands(direction)[0]
       column += direction_summands(direction)[1]
       
+      
       break if same_color_piece?(row, column)
+      #break if check_for_checks(row,colum)
       break capture_squares << [row, col, @game.board[row][col]] if opponent_color_piece?(row, column) || self.class != King
       break if opponent_color_piece?(row, column) && self.class != King
 
-      #break if check_for_checks(row,colum)
+      
 
       free_squares << [row, column] if @game.board[row][column].nil?
       break if self.class == Knight|| self.class == King
@@ -52,17 +55,14 @@ module MovesModule
     [free_squares, capture_squares]
   end
 
-  def check_for_checks(row,colum)
+#  def check_for_checks(row,colum)
+#  end
 
-  #def castling_right
-  #  if @game.board[@piece_position[0]][]
-  #end
 
-  #def castling_left
-  #check_for_checks
-  #  if @first_move == True ||
-  #end
-   end
+
+
+
+
 
   def next_move_inside_the_board?(row, column, direction)
     return false if row + direction_summands(direction)[0] > 7 || column + direction_summands(direction)[1] > 7
