@@ -18,7 +18,7 @@ module MovesModule
     capture_squares_array = []
     
     directions.each do |direction| 
-      free_squares, capture_squares = piece_possible_moves(directions) ### add thetype (knight, queen etc)
+      free_squares, capture_squares = piece_possible_moves(direction) ### add thetype (knight, queen etc)
       free_squares_array << free_squares
       capture_squares_array << capture_squares
     end
@@ -26,13 +26,12 @@ module MovesModule
     [free_squares_array.flatten(1), capture_squares_array.flatten(1)]
   end
 
-  def piece_possible_moves(directions)
-    return possible_moves_queen_tower_bishop_knight(directions) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
+  def piece_possible_moves(direction)
+    return possible_moves_queen_tower_bishop_knight_king(direction) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
   end  
 
-  def possible_moves_queen_tower_bishop_knight_king(direction)
-    row = @piece_position[0]
-    column = @piece_position[1]
+  def possible_moves_queen_tower_bishop_knight_king(direction, row = @piece_position[0], column = @piece_position[1], board = @game.board)
+        
     free_squares = []
     capture_squares = []
   
@@ -41,14 +40,14 @@ module MovesModule
       column += direction_summands(direction)[1]
       
       
-      break if same_color_piece?(row, column)
+      break if same_color_piece?(row, column, board)
       #break if check_for_checks(row,colum)
-      break capture_squares << [row, col, @game.board[row][col]] if opponent_color_piece?(row, column) || self.class != King
-      break if opponent_color_piece?(row, column) && self.class != King
+      break capture_squares << [row, column, board[row][column]] if opponent_color_piece?(row, column, board) 
 
       
 
-      free_squares << [row, column] if @game.board[row][column].nil?
+      free_squares << [row, column] if board[row][column].nil?
+
       break if self.class == Knight|| self.class == King
     end
   
@@ -57,12 +56,6 @@ module MovesModule
 
 #  def check_for_checks(row,colum)
 #  end
-
-
-
-
-
-
 
   def next_move_inside_the_board?(row, column, direction)
     return false if row + direction_summands(direction)[0] > 7 || column + direction_summands(direction)[1] > 7
@@ -74,15 +67,32 @@ module MovesModule
     DIRECTIONS_SUMMANDS_HASH.fetch(direction)
   end
   
-  def same_color_piece?(row, column)  #modifique el board a @game.board, estoy creando same  color piece
-    return false if @game.board[row][column].nil?
-    return true if @game.board[row][column].color == @color
+  def same_color_piece?(row, column, board)  #modifique el board a @game.board, estoy creando same  color piece
+    return false if board[row][column].nil?
+    return true if board[row][column].color == @color
     false    
   end
 
-  def opponent_color_piece?(row, column)
-    return false if @game.board[row][column].nil?
-    return true if @game.board[row][column].color != @color
-      false    
+  def opponent_color_piece?(row, column, board)
+    oppossite_color = self.color == :white ? :black : :white
+    return false if board[row][column].nil?
+    return true if board[row][column].color == oppossite_color
+    false    
   end
+
+  def check_for_checks(from, to, piece)
+    pseudo_board = pseudo_board_creator
+  end
+
+  def pseudo_board_creator  
+    pseudo_board = []
+      @game.board.each do  |element|
+        pseudo_square = []
+        element.each do |square| 
+          pseudo_board << pseudo_square
+      end
+    end
+  end
+
+
 end

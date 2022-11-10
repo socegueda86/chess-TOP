@@ -6,7 +6,7 @@ require_relative 'queen.rb'
 require_relative 'pawn.rb'
 require_relative 'bishop.rb'
 require_relative 'knight.rb'
-
+require_relative 'moves_module.rb'
 
 class Game
   include DrawBoard
@@ -18,6 +18,7 @@ class Game
     @players = [player_1_class.new, player_2_class.new]
     @white_pieces = @players[0] #@players[rand(0..1)]
     @current_player = @white_pieces
+    @kings = [@board[0][4], @board[7][4]]
     
   end
 
@@ -99,5 +100,6 @@ game.draw_board
 
 #game =  Game.new(HumanPlayer,HumanPlayer)
 bishop = Bishop.new(game, 'white', [3,3] )
-bishop.tell_class
-#bishop.available_moves
+
+
+bishop.available_moves(MovesModule::DIAGONAL)

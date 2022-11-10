@@ -7,7 +7,8 @@ class King < Pieces
     @color = color
     @icon = icon_define
     @piece_position
-    @first_move = first_move 
+    @first_move = first_move
+    @check = false
   end
   
   def to_s

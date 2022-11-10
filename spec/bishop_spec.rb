@@ -51,7 +51,7 @@ RSpec.describe Bishop do
 
       it 'returns true' do
         board[5][4] = square
-        expect(bishop.same_color_piece?(5,4)).to be true
+        expect(bishop.same_color_piece?(5, 4, game.board)).to be true
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe Bishop do
 
       it 'returns true' do
         board[5][4] = square
-        expect(bishop.same_color_piece?(5,4)).to be false
+        expect(bishop.same_color_piece?(5, 4, game.board)).to be false
       end
     end
   end
@@ -79,7 +79,7 @@ RSpec.describe Bishop do
 
       it 'returns true' do
         board[5][4] = square
-        expect(bishop.opponent_color_piece?(5,4)).to be false
+        expect(bishop.opponent_color_piece?(5, 4, game.board)).to be false
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Bishop do
 
       it 'returns true' do
         board[5][4] = square
-        expect(bishop.opponent_color_piece?(5,4)).to be true
+        expect(bishop.opponent_color_piece?(5, 4, game.board)).to be true
       end
     end
   end

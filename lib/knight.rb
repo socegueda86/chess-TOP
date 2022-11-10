@@ -10,4 +10,5 @@ class Knight < Pieces
   def to_s
     @icon 
   end
+  
 end

@@ -7,7 +7,7 @@ class Pieces
   include MovesModule
   attr_reader :color, :first_move
 
-  
+  @@pieces_on_board = []
 
   
   def initialize(game, piece_type, color, piece_position)
@@ -15,8 +15,7 @@ class Pieces
     @piece_type = piece_type
     @color = color
     @icon ||= icon_define
-    @piece_position = piece_position
-    @first_move = first_move
+    @@pieces_on_board << self
   end
 
   def to_s
