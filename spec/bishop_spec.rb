@@ -38,7 +38,19 @@ RSpec.describe Bishop do
         expect(bishop.available_moves(DIAGONAL)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
       end
     end
-  
+
+    context 'When is in [5,5] and row 6 is full' do
+      DIAGONAL = [:up_right, :down_right, :up_left, :down_left]
+      let(:pawn) { double('Pawn Double', color: :black)} 
+      board = (1..8).map  { |x| Array.new(8) }
+      let(:game) { double('Game Double', board: board)}
+      subject(:bishop) { Bishop.new( game, :white, [5,5])}
+
+      it 'returns [6,4] and [6,6]' do
+        board[6] = Array.new(8, pawn) 
+        expect(bishop.available_moves(DIAGONAL)[1]).to contain_exactly([6,4, pawn], [6,6, pawn])
+      end
+    end
   end
 
   describe '#same_color_piece?' do
