@@ -37,7 +37,7 @@ class Pawn < Pieces
     return [[row + 2],[column]]
   end
   
-  def normal_capture(row, column)
+  def pawn_normal_capture(row, column)
     capture_array = []
     capture_array << [row + 1, column + 1] unless  check_for_checks(row + 1, column + 1) || @game.board[row + 1][column + 1].nil? || @game.board[row + 1][column + 1].color == @color 
     capture_array << [row + 1, column - 1] unless  check_for_checks(row + 1, column - 1) || @game.board[row + 1][column - 1].nil? || @game.board[row + 1][column - 1].color == @color

@@ -10,7 +10,9 @@ require_relative 'moves_module.rb'
 
 class Game
   include DrawBoard
-  attr_reader :current_player, :board
+  include MovesModule
+
+  attr_reader :current_player, :board, :kings
   
   def initialize(player_1_class, player_2_class)
     @colors = [:white, :black]
@@ -18,14 +20,12 @@ class Game
     @players = [player_1_class.new, player_2_class.new]
     @white_pieces = @players[0] #@players[rand(0..1)]
     @current_player = @white_pieces
-    @kings = [@board[0][4], @board[7][4]]
+    @kings = { white: @board[0][4], black: @board[7][4] }
     
   end
 
   
   def create_board
-    board = (1..8).map  { |x| Array.new(8) }
-    
     board = (1..8).map  { |x| Array.new(8) }
     
     row_1 = %w(T H B Q K B H T)
@@ -41,20 +41,20 @@ class Game
     board
   end
 
-  def piece_builder(element, color, pos)
+  def piece_builder(element, color, position)
 
     if element  == 'T'
-      Tower.new( self, color, pos)   
+      Tower.new( self, color, position)   
     elsif element  == 'H'
-      Knight.new( self, color, pos)
+      Knight.new( self, color, position)
     elsif element  == 'B'
-      Bishop.new( self, color, pos)
+      Bishop.new( self, color, position)
     elsif element  == 'Q'
-      Queen.new( self, color, pos)
+      Queen.new( self, color, position)
     elsif element  == 'K'
-      King.new( self, color, pos)
+      King.new( self, color, position)
     elsif element  == 'P'
-      Pawn.new( self, color, pos)
+      Pawn.new( self, color, position)
     else
       raise StandardError.new "Problem in the #board_creation"
     end
@@ -77,7 +77,6 @@ class Game
     return 1 if @players.find_index(@current_player) == 0
     return 0 if @players.find_index(@current_player) == 1
   end
-
 end
 
 
@@ -90,16 +89,21 @@ class ComputerPlayer;end
 
 
 
-game = Game.new(HumanPlayer,HumanPlayer)
-game.draw_board
-#game.switch_player
-#game.draw_board
-
-
-
-
-#game =  Game.new(HumanPlayer,HumanPlayer)
-bishop = Bishop.new(game, 'white', [3,3] )
-
-
-bishop.available_moves(MovesModule::DIAGONAL)
+#game = Game.new(HumanPlayer,HumanPlayer)
+# game.draw_board
+# 
+# bishop = Bishop.new(game, :white, [3,3])
+# 
+# bishop
+# #game.switch_player
+# #game.draw_board
+# 
+# 
+# 
+# 
+# #game =  Game.new(HumanPlayer,HumanPlayer)
+# bishop = Bishop.new(game, :white, [3,3] )
+# 
+# 
+# 
+# bishop.available_moves(MovesModule::DIAGONAL) #pendiente resolver que no jala los modulos 

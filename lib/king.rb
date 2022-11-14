@@ -8,7 +8,7 @@ class King < Pieces
     @icon = icon_define
     @piece_position
     @first_move = first_move
-    @check = false
+    @one_square_per_move = true
   end
   
   def to_s
@@ -16,5 +16,11 @@ class King < Pieces
   end
 
   def king_moves ;   end
+
+
+
 end
+
+
+
 
