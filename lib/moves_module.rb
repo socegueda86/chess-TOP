@@ -29,7 +29,7 @@ module MovesModule
   end
 
   def piece_possible_moves(direction, board, pawn = false) #pending create a method to analyze pawns
-    return possible_moves_queen_tower_bishop_knight_king(direction, board) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
+    return possible_moves_queen_tower_bishop_knight_king(direction, board) if [:bishop, :tower, :queen, :knight, :king].include?(self.piece_type)
   end  
 
   def possible_moves_queen_tower_bishop_knight_king(direction, board, row = @piece_position[0], column = @piece_position[1])
@@ -44,10 +44,17 @@ module MovesModule
       break capture_squares << [row, column, board[row][column]] if opponent_color_piece?(row, column, board) 
 
       free_squares << [row, column] if board[row][column].nil?
-      break if self.class == Knight || self.class == King
+      break if self.piece_type == :knight || self.class == :king
     end
   
     [free_squares, capture_squares]
+  end
+
+  def directions_piece_can_move(piece_type = self.piece_type)
+    return DIAGONAL + STRAIGHT if piece_type == :queen || piece_type == :king
+    return DIAGONAL if piece_type == :bishop
+    return STRAIGHT if piece_type == :tower
+    return KNIGHT_MOVES if piece_type == :knight
   end
 
 
