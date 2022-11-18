@@ -8,7 +8,7 @@ RSpec.describe Bishop do
     context 'when initial position is [3,3]' do
       board = (1..8).map  { |x| Array.new(8) }
       let(:game) { double('Game Double', board: board)}
-      subject(:bishop) { Bishop.new( game,:white,[3,3])} 
+      subject(:bishop) { Bishop.new( :white, [3,3])} 
 
       it 'returns false when it goes one square up and right' do
         expect(bishop.next_move_inside_the_board?(3,3,:up_right)).to be true
@@ -18,7 +18,7 @@ RSpec.describe Bishop do
     context 'when initial position is [7,7]' do
       board = (1..8).map  { |x| Array.new(8) }
       let(:game) { double('Game Double', board: board)}
-      subject(:bishop) { Bishop.new( game,:white,[7,7])} 
+      subject(:bishop) { Bishop.new( :white, [7,7])} 
     
       it 'returns true when it goes one square up and right' do
         expect(bishop.next_move_inside_the_board?(7,7,:up_right)).to be false
@@ -32,10 +32,10 @@ RSpec.describe Bishop do
       DIAGONAL = [:up_right, :down_right, :up_left, :down_left]
       board = (1..8).map  { |x| Array.new(8) }
       let(:game) { double('Game Double', board: board)}
-      subject(:bishop) { Bishop.new( game, :white, [3,3])}
+      subject(:bishop) { Bishop.new( :white, [3,3])}
 
       it 'returns the an arrray with all posible squares to move' do
-        expect(bishop.available_moves(DIAGONAL)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
+        expect(bishop.available_moves(DIAGONAL, board)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
       end
     end
 
@@ -44,11 +44,11 @@ RSpec.describe Bishop do
       let(:pawn) { double('Pawn Double', color: :black)} 
       board = (1..8).map  { |x| Array.new(8) }
       let(:game) { double('Game Double', board: board)}
-      subject(:bishop) { Bishop.new( game, :white, [5,5])}
+      subject(:bishop) { Bishop.new( :white, [5,5])}
 
       it 'returns [6,4] and [6,6]' do
         board[6] = Array.new(8, pawn) 
-        expect(bishop.available_moves(DIAGONAL)[1]).to contain_exactly([6,4, pawn], [6,6, pawn])
+        expect(bishop.available_moves(DIAGONAL, board)[1]).to contain_exactly([6,4, pawn], [6,6, pawn])
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe Bishop do
       let(:square) { double('square double', color: :white)}
       board = (1..6).map  { |x| Array.new(5) }
       let(:game) { double('Game Double', board: board, color: :white)}
-      subject(:bishop) { Bishop.new( game, :white, [3,3]) }
+      subject(:bishop) { Bishop.new( :white, [3,3]) }
 
       it 'returns true' do
         board[5][4] = square
@@ -72,7 +72,7 @@ RSpec.describe Bishop do
       let(:square) { double('square double', color: :black)}
       board = (1..6).map  { |x| Array.new(5) }
       let(:game) { double('Game Double', board: board, color: :white)}
-      subject(:bishop) { Bishop.new( game, :white, [3,3]) }
+      subject(:bishop) { Bishop.new(  :white, [3,3]) }
 
       it 'returns true' do
         board[5][4] = square
@@ -87,7 +87,7 @@ RSpec.describe Bishop do
       let(:square) { double('square double', color: :white)}
       board = (1..6).map  { |x| Array.new(5) }
       let(:game) { double('Game Double', board: board, color: :white)}
-      subject(:bishop) { Bishop.new( game, :white, [3,3]) }
+      subject(:bishop) { Bishop.new( :white, [3,3]) }
 
       it 'returns true' do
         board[5][4] = square
@@ -100,7 +100,7 @@ RSpec.describe Bishop do
       let(:square) { double('square double', color: :black)}
       board = (1..6).map  { |x| Array.new(5) }
       let(:game) { double('Game Double', board: board, color: :white)}
-      subject(:bishop) { Bishop.new( game, :white, [3,3]) }
+      subject(:bishop) { Bishop.new( :white, [3,3]) }
 
       it 'returns true' do
         board[5][4] = square
