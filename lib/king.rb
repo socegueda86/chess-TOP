@@ -1,14 +1,15 @@
 require_relative 'pieces.rb'
+require_relative 'check_module.rb'
 
 class King < Pieces
   
-  def initialize(game, color, piece_position, first_move = true)
-    @game = game
+  def initialize(color, piece_position, first_move = true)
+    @piece_type = :king
     @color = color
     @icon = icon_define
     @piece_position
     @first_move = first_move
-    @one_square_per_move = true
+    
   end
   
   def to_s

@@ -1,7 +1,7 @@
 class Queen < Pieces
   
-  def initialize(game, color, piece_position)
-    @game = game
+  def initialize(color, piece_position)
+    @piece_type = :queen
     @color = color
     @icon = icon_define
     @piece_position

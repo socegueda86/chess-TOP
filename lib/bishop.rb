@@ -10,8 +10,8 @@ class Bishop < Pieces
 
   attr_reader :color
   
-  def initialize(game, color, piece_position)
-    @game = game
+  def initialize(color, piece_position)
+    @piece_type = :bishop
     @color = color
     @icon = icon_define
     @piece_position = piece_position

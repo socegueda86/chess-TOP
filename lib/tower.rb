@@ -2,8 +2,8 @@ require_relative 'pieces.rb'
 
 class Tower < Pieces
   
-  def initialize(game, color, piece_position, first_move = true)
-    @game = game
+  def initialize(color, piece_position, first_move = true)
+    @piece_type = :tower
     @color = color
     @icon = icon_define
     @piece_position

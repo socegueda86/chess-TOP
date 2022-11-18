@@ -1,11 +1,10 @@
 class Pawn < Pieces
   
-  def initialize(game, color, piece_position, number_move = [1,2])
-    @game = game
+  def initialize(color, piece_position, number_move = [1,2])
+    @piece_type = :pawn
     @color = color
     @icon = icon_define
     @piece_position
-    @first_move = first_move
     @number_move = number_move
   end
 

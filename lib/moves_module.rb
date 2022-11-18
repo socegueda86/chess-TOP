@@ -1,8 +1,10 @@
+
+
 module MovesModule
 
   DIRECTIONS_SUMMANDS_HASH = {up_right: [1, 1], down_right: [-1, 1], up_left: [1, -1],
     down_left: [-1, -1], down: [-1, 0], up: [1, 0], left: [0, -1],
-    right: [0, -1], knight_up_right: [2, 1], knight_right_up: [1, 2],
+    right: [0, 1], knight_up_right: [2, 1], knight_right_up: [1, 2],
     knight_right_down: [-1, 2], knight_down_right: [-2, 1], knight_down_left: [-2, -1],
     knight_left_down: [-1, -2], knight_left_up: [-2, 1], knight_up_left: [-1, -2]}
 
@@ -13,12 +15,12 @@ module MovesModule
                   :knight_left_up, :knight_up_left]
   
 
-  def available_moves(directions, board = @game.board, mock = true )
+  def available_moves(directions, board, mock = true )
     free_squares_array = []
     capture_squares_array = []
     
     directions.each do |direction| 
-      free_squares, capture_squares = piece_possible_moves(direction) ### add thetype (knight, queen etc)
+      free_squares, capture_squares = piece_possible_moves(direction, board) ### add thetype (knight, queen etc)
       free_squares_array << free_squares
       capture_squares_array << capture_squares
     end
@@ -26,11 +28,11 @@ module MovesModule
     [free_squares_array.flatten(1), capture_squares_array.flatten(1)]
   end
 
-  def piece_possible_moves(direction, board = @game.board, pawn = false) #pending create a method to analyze pawns
-    return possible_moves_queen_tower_bishop_knight_king(direction) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
+  def piece_possible_moves(direction, board, pawn = false) #pending create a method to analyze pawns
+    return possible_moves_queen_tower_bishop_knight_king(direction, board) if [Bishop, Tower, Queen, Knight, King].include?(self.class)
   end  
 
-  def possible_moves_queen_tower_bishop_knight_king(direction, row = @piece_position[0], column = @piece_position[1], board = @game.board)
+  def possible_moves_queen_tower_bishop_knight_king(direction, board, row = @piece_position[0], column = @piece_position[1])
     free_squares = []
     capture_squares = []
   
@@ -59,27 +61,24 @@ module MovesModule
     DIRECTIONS_SUMMANDS_HASH.fetch(direction)
   end
   
-  def same_color_piece?(row, column, board)  #modifique el board a @game.board, estoy creando same  color piece
+  def same_color_piece?(row, column, board)  
     return false if board[row][column].nil?
     return true if board[row][column].color == @color
     false    
   end
 
-  def opponent_color_piece?(row, column, board)
-    oppossite_color = self.color == :white ? :black : :white
+  def opponent_color_piece?(row, column, board, self_color = self.color )
+    oppossite_color = self_color == :white ? :black : :white
     return false if board[row][column].nil?
     return true if board[row][column].color == oppossite_color
     false    
   end
 
-  def pawn_normal_capture(row, column)
+  def pawn_normal_capture(row, column, board)
     capture_array = []
-    capture_array << [row + 1, column + 1] unless  check_for_checks(row + 1, column + 1) || @game.board[row + 1][column + 1].nil? || @game.board[row + 1][column + 1].color == @color 
-    capture_array << [row + 1, column - 1] unless  check_for_checks(row + 1, column - 1) || @game.board[row + 1][column - 1].nil? || @game.board[row + 1][column - 1].color == @color
+    capture_array << [row + 1, column + 1] unless  check_for_checks(row + 1, column + 1) || board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == @color 
+    capture_array << [row + 1, column - 1] unless  check_for_checks(row + 1, column - 1) || board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == @color
     #capture_array << unless check_for_checks    
   end
-
-
-
-
 end
+

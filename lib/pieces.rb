@@ -3,39 +3,20 @@ require_relative './moves_module.rb'
 
 class Pieces
 
-  include DrawBoard #erase-line this just for debugging
-  include MovesModule
-  attr_reader :color, :first_move
-
-  @@pieces_on_board = []
-
-  
-  def initialize(game, piece_type, color, piece_position)
-    @game = game
-    @piece_type = piece_type
-    @color = color
-    @icon ||= icon_define
-    @@pieces_on_board << self
-  end
-
-  def to_s
-    @icon 
-  end
-
    def icon_define
         
-    case self
-    when Pawn
+    case @piece_type
+    when :pawn
       @color == :white ? '♟︎' : '♙'
-    when King
+    when :king
       @color == :white ? '♚' : '♔'
-    when Queen
+    when :queen
       @color == :white ? '♛' : '♕'
-    when Bishop
+    when :bishop
       @color == :white ? '♝' : '♗'
-    when Tower
+    when :tower
       @color == :white ? '♜' : '♖'
-    when Knight
+    when :knight
       @color == :white ? '♞' : '♘'
     else
       'E'

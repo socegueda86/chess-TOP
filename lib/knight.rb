@@ -1,7 +1,7 @@
 class Knight < Pieces
   
-  def initialize(game, color, piece_position)
-    @game = game
+  def initialize(color, piece_position)
+    @piece_type = :knight
     @color = color
     @icon = icon_define
     @piece_position

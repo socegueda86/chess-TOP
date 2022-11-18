@@ -7,6 +7,7 @@ require_relative 'pawn.rb'
 require_relative 'bishop.rb'
 require_relative 'knight.rb'
 require_relative 'moves_module.rb'
+require_relative 'check_module.rb'
 
 class Game
   include DrawBoard
@@ -44,17 +45,17 @@ class Game
   def piece_builder(element, color, position)
 
     if element  == 'T'
-      Tower.new( self, color, position)   
+      Tower.new( color, position)   
     elsif element  == 'H'
-      Knight.new( self, color, position)
+      Knight.new( color, position)
     elsif element  == 'B'
-      Bishop.new( self, color, position)
+      Bishop.new( color, position)
     elsif element  == 'Q'
-      Queen.new( self, color, position)
+      Queen.new( color, position)
     elsif element  == 'K'
-      King.new( self, color, position)
+      King.new( color, position)
     elsif element  == 'P'
-      Pawn.new( self, color, position)
+      Pawn.new( color, position)
     else
       raise StandardError.new "Problem in the #board_creation"
     end
@@ -88,21 +89,22 @@ class ComputerPlayer;end
 
 
 
-
+#
 #game = Game.new(HumanPlayer,HumanPlayer)
 # game.draw_board
 # 
-# bishop = Bishop.new(game, :white, [3,3])
-# 
+#bishop = Bishop.new( :white, [3,3])
+ 
 # bishop
-# #game.switch_player
-# #game.draw_board
+#
+ #game.switch_player
+#game.draw_board
 # 
 # 
 # 
 # 
 # #game =  Game.new(HumanPlayer,HumanPlayer)
-# bishop = Bishop.new(game, :white, [3,3] )
+
 # 
 # 
 # 
