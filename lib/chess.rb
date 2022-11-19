@@ -19,9 +19,13 @@ class Game
     @colors = [:white, :black]
     @board = create_board()
     @players = [player_1_class.new, player_2_class.new]
-    @white_pieces = @players[0] #@players[rand(0..1)]
+    @white_pieces = @players[0] #@players[rand(0..1)] I need to correct the rspec so it acepts :rand but returns 1
     @current_player = @white_pieces
-    @kings = { white: @board[0][4], black: @board[7][4] }
+    @kings = { white: @board[0][4], black: @board[7][4] }  ## when it moves it should update the position
+    @moves = []
+
+    # elements in @moves  will have this form:
+    #[ [[from],[to], color, piece]  ] /----/ [ [[a,b],[a2,b2],:color,:piece]   ]
     
   end
 

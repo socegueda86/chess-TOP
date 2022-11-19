@@ -55,7 +55,7 @@ module MovesModule
     return DIAGONAL if piece_type == :bishop
     return STRAIGHT if piece_type == :tower
     return KNIGHT_MOVES if piece_type == :knight
-  end
+  end ## need to implement  DELafterDEBUG
 
 
   def next_move_inside_the_board?(row, column, direction)
@@ -83,13 +83,47 @@ module MovesModule
 
   def pawn_normal_capture(row, column, board)
     capture_array = []
-    capture_array << [row + 1, column + 1] unless  check_for_checks(row + 1, column + 1) || board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == @color 
-    capture_array << [row + 1, column - 1] unless  check_for_checks(row + 1, column - 1) || board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == @color
+    capture_array << [row + 1, column + 1, board[row + 1][column + 1]] unless  check_for_checks(row + 1, column + 1) || board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == @color 
+    capture_array << [row + 1, column - 1, board[row + 1][column + 1]] unless  check_for_checks(row + 1, column - 1) || board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == @color
     #capture_array << unless check_for_checks    
   end
 
-  def en_passant_capture 
+  def en_passant_capture
+    caputure = []
+    
+      
+    end 
+
+    if self.piece_position[0] == 4 && self.color == :white
+    end 
 
   end
+
+
+  def en_passant_capture
+    if self.color == :black
+      return false unless self.piece_position[0] == 3 # checks if self pawn is inte correc row to use en passant
+      return false unless game.moves[-1][3] == :pawn && game.moves[-1][2] == :white # checks if both pieces are pawns and if they have opposite colors
+      return false unless game.moves[-1][1][0] == self.piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return false unless game.moves[-1][1][1] == self.piece_position[1] + 1 || game.moves[-1][1][1] == self.piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      
+      pawn_to_eat_column = game.moves[-1][1][1]
+      
+      return [2 , pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
+    end
+
+    if self.color == :white
+      return false unless self.piece_position[0] == 4 # checks if self pawn is inte correc row to use en passant
+      return false unless game.moves[-1][3] == :pawn && game.moves[-1][2] == :black # checks if both pieces are pawns and if they have opposite colors
+      return false unless game.moves[-1][1][0] == self.piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return false unless game.moves[-1][1][1] == self.piece_position[1] + 1 || game.moves[-1][1][1] == self.piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      pawn_to_eat_row = game.moves[-1][1][0]
+      pawn_to_eat_column = game.moves[-1][1][1]
+
+      return [5, pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
+    end
+
+  end
+
 end
 
