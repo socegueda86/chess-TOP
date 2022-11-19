@@ -22,7 +22,7 @@ module ChecksModule
     pseudo_board
   end
 
-  def board_if_piece_moved(pseudo_board, from, to, castling = false)
+  def board_if_piece_moved(pseudo_board, from, to, castling)
     unless castling
       pseudo_board[to[0]][to[1]] = pseudo_board[from[0]][from[1]]
       pseudo_board[from[0]][from[1]] = nil
@@ -34,9 +34,10 @@ module ChecksModule
   end
 
 
-  def check_for_checks(color,  board, mock = true)
+  def check_for_checks(color,  board, mock = true, from = nil, to = nil)
+    raise StandardError "from and to variables are not given check code againg" if mock == true && from != nil && to != nil
     capture = []
-    board = mock == true ? pseudo_board_creator : board
+    board = mock == true ? board_if_piece_moved(pseudo_board_creator(board), from, to, castling = false) : board
     
     capture << check_4_checks_by_direction(DIAGONAL, board, [:bishop, :queen, :king]).flatten(1)
     capture << check_4_checks_by_direction(STRAIGHT, board, [:tower, :queen, :king]).flatten(1)

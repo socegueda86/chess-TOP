@@ -77,9 +77,6 @@ RSpec.describe 'check_module.rb' do
     end
     
     context "When it uses DIAGONAL directions" do
-      
- 
-  
       it 'returns the posible checks in diagonal direction' do
         
         direction = :up_right

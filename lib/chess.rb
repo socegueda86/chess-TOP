@@ -25,43 +25,6 @@ class Game
     
   end
 
-  
-  def create_board
-    board = (1..8).map  { |x| Array.new(8) }
-    
-    row_1 = %w(T H B Q K B H T)
-    row_2 = %w(P P P P P P P P)
-    row_7 = %w(P P P P P P P P)
-    row_8 = %w(T H B Q K B H T)
-    
-    board[0] = row_1.map.with_index { |element, index| piece_builder(element, @colors[0], [0, index]) }
-    board[1] = row_2.map.with_index { |element, index| piece_builder(element, @colors[0], [1, index]) }
-    board[6] = row_7.map.with_index { |element, index| piece_builder(element, @colors[1], [6, index]) }
-    board[7] = row_8.map.with_index { |element, index| piece_builder(element, @colors[1], [7, index]) }
-    
-    board
-  end
-
-  def piece_builder(element, color, position)
-
-    if element  == 'T'
-      Tower.new( color, position)   
-    elsif element  == 'H'
-      Knight.new( color, position)
-    elsif element  == 'B'
-      Bishop.new( color, position)
-    elsif element  == 'Q'
-      Queen.new( color, position)
-    elsif element  == 'K'
-      King.new( color, position)
-    elsif element  == 'P'
-      Pawn.new( color, position)
-    else
-      raise StandardError.new "Problem in the #board_creation"
-    end
-  end 
-
-  # debuggin erase-comment will create test when i have added the pieces icons pending
   def draw_board     
     if @players[0].class == ComputerPlayer && @players[1].class == HumanPlayer
       draw_board_blacks_perspective
@@ -88,24 +51,3 @@ class ComputerPlayer;end
 
 
 
-
-#
-#game = Game.new(HumanPlayer,HumanPlayer)
-# game.draw_board
-# 
-#bishop = Bishop.new( :white, [3,3])
- 
-# bishop
-#
- #game.switch_player
-#game.draw_board
-# 
-# 
-# 
-# 
-# #game =  Game.new(HumanPlayer,HumanPlayer)
-
-# 
-# 
-# 
-# bishop.available_moves(MovesModule::DIAGONAL) #pendiente resolver que no jala los modulos 

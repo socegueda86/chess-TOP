@@ -19,7 +19,7 @@ module MovesModule
     free_squares_array = []
     capture_squares_array = []
     
-    directions.each do |direction| 
+    directions_a_piece_can_move.each do |direction| 
       free_squares, capture_squares = piece_possible_moves(direction, board) ### add thetype (knight, queen etc)
       free_squares_array << free_squares
       capture_squares_array << capture_squares
@@ -86,6 +86,10 @@ module MovesModule
     capture_array << [row + 1, column + 1] unless  check_for_checks(row + 1, column + 1) || board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == @color 
     capture_array << [row + 1, column - 1] unless  check_for_checks(row + 1, column - 1) || board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == @color
     #capture_array << unless check_for_checks    
+  end
+
+  def en_passant_capture 
+
   end
 end
 
