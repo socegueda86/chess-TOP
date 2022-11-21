@@ -126,8 +126,10 @@ module MovesModule
   def castling_left?(board = game.board, piece_position = self.piece_position)
     return false unless self.castling_left == true
     return false unless board[piece_position[0]][ piece_position[1] - 1 ].nil? && board[ piece_position[0]][ piece_position[1] - 2 ].nil?
+    return false unless board[ piece_position[0]][ piece_position[1] - 3 ].nil?
     return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] - 1]).nil?
     return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] - 2]).nil?
+    
     true   
   end
 
