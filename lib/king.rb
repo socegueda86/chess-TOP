@@ -3,12 +3,14 @@ require_relative 'check_module.rb'
 
 class King < Pieces
   
-  def initialize(color, piece_position, first_move = true)
+  def initialize(color, piece_position)
     @piece_type = :king
     @color = color
     @icon = icon_define
     @piece_position
-    @first_move = first_move
+    @castling_right = true
+    @castling_left = true
+    puts "Remeber too turn them false if the king move or if the tower move for the first time "
     
   end
   

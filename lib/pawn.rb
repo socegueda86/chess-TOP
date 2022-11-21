@@ -1,11 +1,13 @@
 class Pawn < Pieces
+
+  attr_reader :piece_position, :color, :piece_type
   
-  def initialize(color, piece_position, number_move = [1,2])
+  def initialize(color, piece_position)
     @piece_type = :pawn
     @color = color
     @icon = icon_define
     @piece_position
-    @number_move = number_move
+
   end
 
   def to_s

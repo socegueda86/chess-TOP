@@ -9,6 +9,9 @@ require_relative 'knight.rb'
 require_relative 'moves_module.rb'
 require_relative 'check_module.rb'
 
+# I still need to solve yf the
+
+
 class Game
   include DrawBoard
   include MovesModule
@@ -23,10 +26,6 @@ class Game
     @current_player = @white_pieces
     @kings = { white: @board[0][4], black: @board[7][4] }  ## when it moves it should update the position
     @moves = []
-
-    # elements in @moves  will have this form:
-    #[ [[from],[to], color, piece]  ] /----/ [ [[a,b],[a2,b2],:color,:piece]   ]
-    
   end
 
   def draw_board     
