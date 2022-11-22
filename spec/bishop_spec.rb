@@ -35,7 +35,7 @@ RSpec.describe Bishop do
       subject(:bishop) { Bishop.new( :white, [3,3])}
 
       it 'returns the an arrray with all posible squares to move' do
-        expect(bishop.available_moves(DIAGONAL, board)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
+        expect(bishop.available_moves(board)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe Bishop do
 
       it 'returns [6,4] and [6,6]' do
         board[6] = Array.new(8, pawn) 
-        expect(bishop.available_moves(DIAGONAL, board)[1]).to contain_exactly([6,4, pawn], [6,6, pawn])
+        expect(bishop.available_moves( board)[1]).to contain_exactly([6,4, pawn], [6,6, pawn])
       end
     end
   end
