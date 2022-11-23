@@ -48,14 +48,39 @@ class Game
   def play # pending to finish and to test
     intro 
     draw_board
-    while true || draw_check
-      @current_player.move
-      check_for_checks
-      break if check_for_win == true
+    while true
+      break "It's a draw" if draw_check
+      loop do
+        users_input = @current_player.get_input
+        break users_input if board[users_input[0][0]][users_input[0][1]].color == @current_player.color
+        puts "Invalid input, please try again \n\n"
+      end
+      move(users_input)
+      @moves << users_input
+      puts "Check!" unless check_for_checks.nil?
+      break puts "Player #{'###pending'} wins!" if check_for_win == true
       switch_player
     end
   end
-end
+
+  def intro 
+    puts "intro"
+  end
+
+  def draw_check  # "pending test"
+    if check_for_checks.nil?
+      board.find do |row|
+        row.find do |square| 
+          unless square.nil?
+            true unless square.available_moves(board).nil?
+          end
+        end
+      end
+      
+    else
+      false
+    end
+  end
 
 
 class Player
@@ -71,10 +96,10 @@ class HumanPlayer
     @color = color
   end
 
-  def move # pending to test
-    from_to_array = []
+  def get_input # pending to test
   
     loop do
+      from_to_array = []
       loop do
         users_input = get_users_input(:from)
         break from_to_array << users_input if valid_users_input?(users_input, :from)
@@ -106,16 +131,22 @@ class HumanPlayer
 
   def valid_users_input?(users_input, from_to) # pending to test
     
-    row = users_input[0]
-    column = users_input[1]
+    from_row = self.piece_position[0]
+    from_column = self.piece_position[1]
+    to_row = users_input[0]
+    to_column = users_input[1]
 
     if from_to == :from
-      return true unless @game.board[row][column].nil? || @game.board[row][column].color != @color
-      false
+      return true unless @game.board[from_row][from_column].nil? || @game.board[from_row][from_column].color != @color
+      return false
     end
-    ### I AM HERE... WILL FINISH THIS MODULE AND MAKE A COMMIT
-    if from_to == :to ;
-
+    
+    if from_to == :to 
+      return false if check_for_checks(self.color, game.board, true, self.piece_position, [to_row, to_column] ).nil?
+      
+      moves, captures = available_moves(game.board, game.board[to_row][to_column]) 
+      return false if moves.nil? && captures.nil?
+      return true
     end
   end
 

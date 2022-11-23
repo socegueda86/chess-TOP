@@ -8,7 +8,7 @@ class Bishop < Pieces
   include DrawBoard #erase this just for debugging
   include MovesModule
 
-  attr_reader :color, :piece_type
+  attr_reader :color, :piece_type, :piece_position
   
   def initialize(color, piece_position)
     @piece_type = :bishop

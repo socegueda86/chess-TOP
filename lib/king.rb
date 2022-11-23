@@ -8,10 +8,11 @@ class King < Pieces
     @color = color
     @icon = icon_define
     @piece_position
-    @castling_right = true
-    @castling_left = true
-    puts "Remeber too turn them false if the king move or if the tower move for the first time "
-    
+    @first_move = true
+  end
+
+  def first_move_switch
+    @first_move = false
   end
   
   def to_s

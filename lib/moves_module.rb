@@ -12,22 +12,22 @@ module MovesModule
                   :knight_down_right, :knight_down_left, :knight_left_down,
                   :knight_left_up, :knight_up_left]
 
-  def available_moves(board)
+  def available_moves(board, piece = self)
     capture_array = []
     moves_array = []
-    if [:bishop, :tower, :queen, :knight, :king].include?(self.piece_type)
-      moves, captures = available_moves_q_t_b_kn_k(directions = directions_piece_can_move(self.piece_type), board)
+    if [:bishop, :tower, :queen, :knight, :king].include?(piece.piece_type)
+      moves, captures = available_moves_q_t_b_kn_k(board, directions_piece_can_move(piece.piece_type), piece)
       moves_array << moves
       capture_array << captures
     end
 
-    if self.piece_type == :pawn
-      capture_array << pawn_normal_capture(self.piece_position[0], self.piece_position[1], board)
-      capture_array << en_passant_capture(color = self.color, piece_position = self.piece_position)
+    if piece.piece_type == :pawn
+      capture_array << pawn_normal_capture(piece.piece_position[0], piece.piece_position[1], board)
+      capture_array << en_passant_capture(color = piece.color, piece_position = piece.piece_position)
       moves_array << pawn_movements(board)
     end
 
-    if self.piece_type == :king
+    if piece.piece_type == :king
       moves_array << castling
     end
 
@@ -35,13 +35,13 @@ module MovesModule
     [moves_array.flatten(1), capture_array.flatten(1)]
     
   end
-
-  def available_moves_q_t_b_kn_k(directions = directions_piece_can_move(self.piece_type), board)
+### erase 22 3:56am
+  def available_moves_q_t_b_kn_k(board, directions = directions_piece_can_move,  piece = self)
     free_squares_array = []
     capture_squares_array = []
 
     directions.each do |direction| 
-      free_squares, capture_squares = moves_by_direction_q_t_b_kn_k(direction, board) # if [:bishop, :tower, :queen, :knight, :king].include?(self.piece_type)
+      free_squares, capture_squares = moves_by_direction_q_t_b_kn_k(direction, board, piece.piece_position[0],  piece.piece_position[1]) # if [:bishop, :tower, :queen, :knight, :king].include?(self.piece_type)
       free_squares_array << free_squares
       capture_squares_array << capture_squares
     end
@@ -50,7 +50,7 @@ module MovesModule
   end
 
   #**
-  def moves_by_direction_q_t_b_kn_k(direction, board, row = @piece_position[0], column = @piece_position[1])
+  def moves_by_direction_q_t_b_kn_k(direction, board, row = self.piece_position[0], column = self.piece_position[1])
     free_squares = []
     capture_squares = []
 
