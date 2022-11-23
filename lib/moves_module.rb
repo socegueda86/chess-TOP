@@ -4,7 +4,7 @@ module MovesModule
     down_left: [-1, -1], down: [-1, 0], up: [1, 0], left: [0, -1],
     right: [0, 1], knight_up_right: [2, 1], knight_right_up: [1, 2],
     knight_right_down: [-1, 2], knight_down_right: [-2, 1], knight_down_left: [-2, -1],
-    knight_left_down: [-1, -2], knight_left_up: [-2, 1], knight_up_left: [-1, -2]}
+    knight_left_down: [-1, -2], knight_left_up: [1, -2], knight_up_left: [2, -1]}
 
   DIAGONAL = [:up_right, :down_right, :up_left, :down_left]
   STRAIGHT = [:up, :down, :right, :left]
@@ -172,7 +172,8 @@ module MovesModule
     row = piece_position[0]
     column = piece_position[1]
 
-    return false unless board[row][column].first_move == true && board[row][7].first_move == true
+    return false unless check_for_checks(self.color, board, false).flatten[0].nil?
+    return false unless board[row][column].first_move == true && board[row][7]&.first_move == true
     return false unless board[row][column + 1 ].nil? && board[row][column + 2 ].nil?
     return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 1]).flatten[0].nil?
     return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 2]).flatten[0].nil?
@@ -184,7 +185,8 @@ module MovesModule
     row = piece_position[0]
     column = piece_position[1]
 
-    return false unless board[row][column].first_move == true && board[row][0].first_move == true 
+    return false unless check_for_checks(self.color, board, false).flatten[0].nil?
+    return false unless board[row][column].first_move == true && board[row][0]&.first_move == true 
     return false unless board[row][column - 1 ].nil? && board[row][column - 2 ].nil?
     return false unless board[row][column - 3 ].nil?
     return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column - 1]).flatten[0].nil?
@@ -193,12 +195,12 @@ module MovesModule
   end
 
   def castling(board = game.board, piece_position = self.piece_position)
-    return false unless check_for_checks(self.color, board, false).nil?
+    
     castling_array = []
-   
-   castling_array << [ piece_position[0], piece_position[1] + 2, :castling ] if castling_right?(board, piece_position)
-   castling_array << [ piece_position[0], piece_position[1] - 2, :castling ] if castling_left?(board, piece_position)
-   castling_array
+    
+    castling_array << [ piece_position[0], piece_position[1] + 2, :castling_right ] if castling_right?(board, piece_position)
+    castling_array << [ piece_position[0], piece_position[1] - 2, :castling_left ] if castling_left?(board, piece_position)
+    castling_array
   end
 end
 

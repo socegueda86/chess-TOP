@@ -53,7 +53,6 @@ RSpec.describe King do
         board[0][6] = w_knight
         board[0][4] = w_king
         board[0][7] = w_tower_right
-        debugging_draw_board(board)
         board
       end
 
@@ -67,7 +66,81 @@ RSpec.describe King do
         result = w_king.castling_right?(board, [0,4])
         expect(result).to be (false)
       end
+    end
 
+    context "when the king is in check or it crosses a check" do
+      let(:board) do
+        board = (1..8).map  { |x| Array.new(8, nil) }
+        board[2][4] = b_tower_left
+        board[0][0] = w_tower_left
+        board[0][4] = w_king
+        board[0][7] = w_tower_right
+
+        board[5][3] = w_knight
+        board[5][7] = w_queen
+        board[7][0] = b_tower_left
+        board[7][4] = b_king
+        board[7][7] = b_tower_right
+        board
+      end
+
+      it "should return false to castling_left?" do
+        result = w_king.castling_left?(board, [0,4])
+        expect(result).to be (false)
+      end
+
+      it "should return false to castling_right?" do
+        result = w_king.castling_right?(board, [0,4])
+        expect(result).to be (false)
+      end
+
+      it "should return false to castling_left?" do 
+        result = b_king.castling_left?(board, [7,4])
+        expect(result).to be (false)
+      end
+
+      it "should return false to castling_right?" do
+        result = b_king.castling_right?(board, [7,4])
+        expect(result).to be (false)
+      end
+    end
+
+    context "when the king crosses a check or there's an opponent piece in between" do
+      let(:board) do
+        board = (1..8).map  { |x| Array.new(8, nil) }
+        board[0][6] = b_bishop
+        board[0][0] = w_tower_left
+        board[0][4] = w_king
+        board[0][7] = w_tower_right
+
+        
+        board[6][7] = w_pawn
+        board[7][0] = b_tower_left
+        board[7][4] = b_king
+        board[7][7] = b_tower_right
+        board
+      end
+
+      it "should return false to castling_left?" do
+        result = w_king.castling_left?(board, [0,4])
+        expect(result).to be (true)
+      end
+
+      it "should return false to castling_right?" do
+        result = w_king.castling_right?(board, [0,4])
+        expect(result).to be (false)
+      end
+
+      it "should return false to castling_left?" do  
+        result = b_king.castling_left?(board, [7,4])
+        expect(result).to be (true)
+      end
+
+      it "should return false to castling_right?" do
+        result = b_king.castling_right?(board, [7,4])
+        expect(result).to be (false)
+        
+      end
     end
   end
 end
