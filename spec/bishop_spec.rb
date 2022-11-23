@@ -116,5 +116,3 @@ RSpec.describe Bishop do
 end
 
 
-
-

@@ -269,12 +269,12 @@ RSpec.describe 'check_module.rb' do
        board 
      end
  
-    it "move the piece to the new location" do
+      it "move the piece to the new location" do
 
-      board_if_piece_moved(board, [3,3], [2,3], false)
+        board_if_piece_moved(board, [3,3], [2,3], false)
 
-      expect(board[2][3]).to eq(b_king)
-     end
+        expect(board[2][3]).to eq(b_king)
+      end
     end
   end
 

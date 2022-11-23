@@ -55,6 +55,7 @@ class Game
         break users_input if board[users_input[0][0]][users_input[0][1]].color == @current_player.color
         puts "Invalid input, please try again \n\n"
       end
+      
       move(users_input)
       @moves << users_input
       puts "Check!" unless check_for_checks.nil?
@@ -81,6 +82,11 @@ class Game
       false
     end
   end
+
+  def check_for_win ;
+
+  end
+end
 
 
 class Player
@@ -143,7 +149,6 @@ class HumanPlayer
     
     if from_to == :to 
       return false if check_for_checks(self.color, game.board, true, self.piece_position, [to_row, to_column] ).nil?
-      
       moves, captures = available_moves(game.board, game.board[to_row][to_column]) 
       return false if moves.nil? && captures.nil?
       return true

@@ -35,7 +35,7 @@ module MovesModule
     [moves_array.flatten(1), capture_array.flatten(1)]
     
   end
-### erase 22 3:56am
+
   def available_moves_q_t_b_kn_k(board, directions = directions_piece_can_move,  piece = self)
     free_squares_array = []
     capture_squares_array = []
@@ -168,25 +168,33 @@ module MovesModule
     
     # I have to add a some "if class = King to certaing methods so it works"  #**
   def castling_right?(board = game.board, piece_position = self.piece_position)
-    return false if self.castling_right == false
-    return false unless board[piece_position[0]][ piece_position[1] + 1 ].nil? && board[ piece_position[0]][ piece_position[1] + 2 ].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] + 1]).nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] + 2]).nil?
+    
+    row = piece_position[0]
+    column = piece_position[1]
+
+    return false unless board[row][column].first_move == true && board[row][7].first_move == true
+    return false unless board[row][column + 1 ].nil? && board[row][column + 2 ].nil?
+    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 1]).flatten[0].nil?
+    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 2]).flatten[0].nil?
     true   
   end
 
   def castling_left?(board = game.board, piece_position = self.piece_position)
-    return false unless self.castling_left == true
-    return false unless board[piece_position[0]][ piece_position[1] - 1 ].nil? && board[ piece_position[0]][ piece_position[1] - 2 ].nil?
-    return false unless board[ piece_position[0]][ piece_position[1] - 3 ].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] - 1]).nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [piece_position[0], piece_position[1] - 2]).nil?
-    
+
+    row = piece_position[0]
+    column = piece_position[1]
+
+    return false unless board[row][column].first_move == true && board[row][0].first_move == true 
+    return false unless board[row][column - 1 ].nil? && board[row][column - 2 ].nil?
+    return false unless board[row][column - 3 ].nil?
+    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column - 1]).flatten[0].nil?
+    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column - 2]).flatten[0].nil?
     true   
   end
 
   def castling(board = game.board, piece_position = self.piece_position)
-   castling_array = []
+    return false unless check_for_checks(self.color, board, false).nil?
+    castling_array = []
    
    castling_array << [ piece_position[0], piece_position[1] + 2, :castling ] if castling_right?(board, piece_position)
    castling_array << [ piece_position[0], piece_position[1] - 2, :castling ] if castling_left?(board, piece_position)

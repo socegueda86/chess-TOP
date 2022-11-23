@@ -22,40 +22,27 @@ module ChecksModule
     pseudo_board
   end
 
-  def board_if_piece_moved(pseudo_board, from, to, is_a_castling)
+  def board_if_piece_moved(pseudo_board, from, to) # is_a_castling)
     
-    unless is_a_castling
+    
       pseudo_board[to[0]][to[1]] = pseudo_board[from[0]][from[1]]
       pseudo_board[from[0]][from[1]] = nil
       pseudo_board
-      #If I add a @capture_pieces should modify the also the test
-    else 
-      
-      pseudo_board[to[0]][to[1]] = pseudo_board[from[0]][from[1]]
-      pseudo_board[from[0]][from[1]] = nil
-      if to[1] == 6
-        pseudo_board[0][5] = pseudo_board[0][7]
-        pseudo_board[0][7] = nil
-      elsif to[1] == 2
-        pseudo_board[0][3] = pseudo_board[0][0]
-        pseudo_board[0][0] = nil
-      else
-        raise StandardError "Error at castling inside MovesModule:board_if_piece_moved"
-      end
-
-    end
   end
 
 
-  def check_for_checks(color,  board, mock = true, from = nil, to = nil)
-    raise StandardError "from and to variables are not given check code againg" if mock == true && from != nil && to != nil
+  def check_for_checks(color,  board, mock = true, from = nil, to = nil) 
+    raise StandardError " 'from' and 'to' variables are are needed if mock == true, check code againg" if mock == true && from == nil && to == nil
     capture = []
-    board = mock == true ? board_if_piece_moved( pseudo_board_creator(board), from, to, is_a_castling ) : board
+    board = mock == true ? board_if_piece_moved( pseudo_board_creator(board), from, to) : board
     
-    capture << check_4_checks_by_direction(DIAGONAL, board, [:bishop, :queen, :king]).flatten(1)
-    capture << check_4_checks_by_direction(STRAIGHT, board, [:tower, :queen, :king]).flatten(1)
-    capture << check_4_checks_by_direction(KNIGHT_MOVES, board, [knight]).flatten(1)
-    capture << check_4_checks_pawns.flatten(1)
+    
+
+    DIAGONAL.each { |direction| capture << check_4_checks_by_direction(direction, board, [:bishop, :queen]) }
+    STRAIGHT.each { |direction| capture << check_4_checks_by_direction(direction, board, [:tower, :queen]) }
+    (DIAGONAL+ STRAIGHT).each { |direction| capture << check_4_checks_by_direction(direction, board, [:king]) }
+    KNIGHT_MOVES.each {|direction| capture << check_4_checks_by_direction(direction, board, [:knight]) }
+    capture << check_4_checks_pawns(board, color).flatten(1) unless check_4_checks_pawns(board, color).nil?
   end
 
 
@@ -77,7 +64,7 @@ module ChecksModule
         end
         break
       end
-      break if piece_classes == [:knight] 
+      break if piece_classes == [:knight] || piece_classes == [:king] 
     end
      capture_squares
   end
