@@ -102,10 +102,10 @@ module MovesModule
   end
 
 #**
-  def pawn_normal_capture(row, column, board)
+  def pawn_normal_capture(board, row = self.piece_position[0], column = self.piece_position[1])
     capture_array = []
 
-    return [] if row == 8
+    return [] if row == 8 || row == 0
     if self.color == :white
       capture_array << [row + 1, column + 1, board[row + 1][column + 1]] unless board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == self.color #  check_for_checks(row + 1, column + 1) ||
       capture_array << [row + 1, column - 1, board[row + 1][column - 1]] unless board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == self.color #  check_for_checks(row + 1, column - 1) ||
@@ -120,47 +120,47 @@ module MovesModule
   end
 
   #Pending to test  #**
-  def en_passant_capture(color = self.color, piece_position = self.piece_position)
+  def en_passant_capture(board, color = self.color, piece_position = self.piece_position)
     
-    pawn_to_eat_row = game.moves[-1][1][0]
-    pawn_to_eat_column = game.moves[-1][1][1]
-
+    pawn_to_eat_row = game.moves[-1][0][0]
+    pawn_to_eat_column = game.moves[-1][0][1]
+    
     if color == :black
       return false unless piece_position[0] == 3 # checks if self pawn is inte correc row to use en passant
-      return false unless game.moves[-1][3] == :pawn && game.moves[-1][2] == :white # checks if both pieces are pawns and if they have opposite colors
-      return false unless game.moves[-1][1][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
-      return false unless game.moves[-1][1][1] == piece_position[1] + 1 || game.moves[-1][1][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      return false unless game.moves[-1][2] == :pawn && game.moves[-1][1] == :white # checks if both pieces are pawns and if they have opposite colors
+      return false unless game.moves[-1][0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return false unless game.moves[-1][0][1] == piece_position[1] + 1 || game.moves[-1][0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
       return [2 , pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
     end
 
     if color == :white
       return false unless piece_position[0] == 4 # checks if self pawn is inte correc row to use en passant
-      return false unless game.moves[-1][3] == :pawn && game.moves[-1][2] == :black # checks if both pieces are pawns and if they have opposite colors
-      return false unless game.moves[-1][1][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
-      return false unless game.moves[-1][1][1] == piece_position[1] + 1 || game.moves[-1][1][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      return false unless game.moves[-1][2] == :pawn && game.moves[-1][1] == :black # checks if both pieces are pawns and if they have opposite colors
+      return false unless game.moves[-1][0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return false unless game.moves[-1][0][1] == piece_position[1] + 1 || game.moves[-1][0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
       return [5, pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
     end
 
     raise StandardError "en_passant_capture error"
   end
 
-  def pawn_movements(board)
+  def pawn_forward_move(board = game.board, piece_position = self.piece_position)
     moves_array = []
-
-    row = self.piece_position[0]
-    column = self.piece_position[1]
+    
+    row = piece_position[0]
+    column = piece_position[1]
     if self.color == :white
-    moves_array << [row + 1, column] if board[row + 1][column].nil 
-    moves_array << [row + 2, column] if board[row + 2][column].nil && row == 1
+      moves_array << [row + 1, column] if board[row + 1][column].nil? 
+      moves_array << [row + 2, column] if board[row + 1][column].nil? && board[row + 2][column].nil? && row == 1
     end
 
     if self.color == :black
-      moves_array << [row - 1, column] if board[row - 1][column].nil 
-      moves_array << [row - 2, column] if board[row - 2][column].nil && row == 6
+      moves_array << [row - 1, column] if board[row - 1][column].nil? &&  board[row - 1][column].nil? 
+      moves_array << [row - 2, column] if board[row - 1][column].nil? && board[row - 2][column].nil? && row == 6
     end
-
-    moves_array << en_passant_capture unless en_passant_capture == false
-    moves_array += pawn_normal_capture unless pawn_normal_capture.nil?
+    moves_array
+#    moves_array << en_passant_capture unless en_passant_capture == false
+#    moves_array += pawn_normal_capture unless pawn_normal_capture.nil?
   end
 
     # pending to test

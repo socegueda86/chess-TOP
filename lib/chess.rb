@@ -25,7 +25,7 @@ class Game
     @white_pieces = @players[0] #@players[rand(0..1)] I need to correct the rspec so it acepts :rand but returns 1
     @current_player = @white_pieces
     @kings = { white: @board[0][4], black: @board[7][4] }  ## when it moves it should update the position
-    @moves = []
+    @moves = [] # [ [[row1,col1], color, piece1], [[row2, col2], color, piece2],... [[row_n,col_n], color, piece_n]]
   end
 
   def draw_board     
