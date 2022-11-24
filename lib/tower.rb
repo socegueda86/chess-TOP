@@ -8,7 +8,7 @@ class Tower < Pieces
     @piece_type = :tower
     @color = color
     @icon = icon_define
-    @piece_position
+    @piece_position = piece_position
     @first_move = true
   end
 
