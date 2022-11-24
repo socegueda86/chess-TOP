@@ -55,37 +55,37 @@ RSpec.describe Pawn do
   describe "#pawn_forward_move" do
     context "when a black pawn is blocked by an opposite color piece" do
       it "returns an empty array" do
-        result = board[6][0].pawn_forward_move(board)
+        result = board[6][0].pawn_forward_move(board, b_pawn_1)
         expect(result). to be()
       end
     
 
       it "returns an empty array" do
-        result = board[1][3].pawn_forward_move(board)
+        result = board[1][3].pawn_forward_move(board, w_pawn_4)
         expect(result).to be()
       end
     end
 
     context "when the pawn is not blocked and it is on the initial position" do 
       it "returns an array with a one-square movement and a two-square movement" do
-        result = board[6][3].pawn_forward_move(board)
+        result = board[6][3].pawn_forward_move(board, b_pawn_2)
         expect(result).to contain_exactly([5,3 ],[4, 3])
       end
 
       it "returns an array with a one-square movement and a two-square movement" do
-        result = board[1][0].pawn_forward_move(board)
+        result = board[1][0].pawn_forward_move(board, w_pawn_1)
         expect(result).to contain_exactly([2,0],[3,0])
       end
     end
     
     context "when the pawn is not blocked and it is not on the initial position" do 
       it "returns an array with a one-square move" do
-        result = board[2][1].pawn_forward_move(board)
+        result = board[2][1].pawn_forward_move(board, w_pawn_2)
         expect(result).to contain_exactly([3,1])
       end
     
       it "returns an array with a one-square move" do
-        result = board[3][6].pawn_forward_move(board)
+        result = board[3][6].pawn_forward_move(board, b_pawn_4)
         expect(result).to contain_exactly([2,6])
       end
     end
@@ -138,9 +138,9 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[3,7],:white, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(b_pawn_4).to receive_message_chain(:game, :moves).and_return([[[3,7],:white, :pawn]])
+        last_move = [[3,7],:white, :pawn]
 
-        result = board[3][6].en_passant_capture(board)
+        result = board[3][6].en_passant_capture(board, last_move)
         expect(result).to contain_exactly(2, 7, board[3][7])
       end
     end
@@ -148,8 +148,8 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[4,5], :black, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(w_pawn_5).to receive_message_chain(:game, :moves).and_return([[[4,5], :black, :pawn]])
-        result = board[4][6].en_passant_capture(board)
+        last_move = [[4,5], :black, :pawn]
+        result = board[4][6].en_passant_capture(board, last_move)
         expect(result).to contain_exactly(5, 5, board[4][5])
       end
     end
@@ -157,9 +157,9 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[3,7],:white, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(b_pawn_4).to receive_message_chain(:game, :moves).and_return([[[3,7],:white, :knight]])
+        last_move = [[3,7],:white, :knight]
 
-        result = board[3][6].en_passant_capture(board)
+        result = board[3][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end
@@ -167,8 +167,8 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[4,5], :black, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(w_pawn_5).to receive_message_chain(:game, :moves).and_return([[[4,5], :black, :queen]])
-        result = board[4][6].en_passant_capture(board)
+        last_move = [[4,5], :black, :queen]
+        result = board[4][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end
@@ -176,9 +176,9 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[3,7],:white, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(b_pawn_4).to receive_message_chain(:game, :moves).and_return([[[3,6],:white, :pawn]])
+        last_move = [[3,6],:white, :pawn]
 
-        result = board[3][6].en_passant_capture(board)
+        result = board[3][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end
@@ -186,8 +186,8 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[4,5], :black, :pawn]" do
       it 'returns the array with the possible capture' do
         
-        allow(w_pawn_5).to receive_message_chain(:game, :moves).and_return([[[5,5], :black, :pawn]])
-        result = board[4][6].en_passant_capture(board)
+        last_move = [[5,5], :black, :pawn]
+        result = board[4][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end
@@ -195,9 +195,9 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[3,7],:white, :pawn]" do
       it 'returns the array with the possible capture' do
           
-        allow(b_pawn_4).to receive_message_chain(:game, :moves).and_return([[[3,6],:black, :pawn]])
+        last_move = [[3,6],:black, :pawn]
   
-        result = board[3][6].en_passant_capture(board)
+        result = board[3][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end
@@ -205,8 +205,8 @@ RSpec.describe Pawn do
     context "when there is a possible en_passant_capture and last move was [[4,5], :black, :pawn]" do
       it 'returns the array with the possible capture' do
           
-        allow(w_pawn_5).to receive_message_chain(:game, :moves).and_return([[[5,5], :white, :pawn]])
-        result = board[4][6].en_passant_capture(board)
+        last_move = [[5,5], :white, :pawn]
+        result = board[4][6].en_passant_capture(board, last_move)
         expect(result).to be(false)
       end
     end

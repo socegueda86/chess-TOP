@@ -104,8 +104,6 @@ module ChecksModule
     kings_position_hash = {}
   
     board.each_with_index do |row, index_1|
-  
-
       row.each_with_index do |square, index_2|
         unless square.nil?
           kings_position_hash[square.color] = [index_1, index_2] if square.piece_type == :king

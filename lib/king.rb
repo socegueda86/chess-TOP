@@ -13,7 +13,7 @@ class King < Pieces
     @piece_type = :king
     @color = color
     @icon = icon_define
-    @piece_position
+    @piece_position = piece_position
     @first_move = true
   end
 

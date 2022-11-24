@@ -34,7 +34,7 @@ RSpec.describe Bishop do
       let(:game) { double('Game Double', board: board)}
       subject(:bishop) { Bishop.new( :white, [3,3])}
 
-      it 'returns the an arrray with all posible squares to move' do
+      it 'returns the an arrray with all posible squares where it can move' do
         expect(bishop.available_moves(board)[0]).to contain_exactly([0,0],[1,1],[2,2],[4,4],[5,5],[6,6],[7,7],[0,6],[1,5],[2,4],[4,2],[5,1],[6,0])
       end
     end

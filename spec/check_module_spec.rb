@@ -271,7 +271,7 @@ RSpec.describe 'check_module.rb' do
  
       it "move the piece to the new location" do
 
-        board_if_piece_moved(board, [3,3], [2,3], false)
+        board_if_piece_moved(board, [3,3], [2,3])
 
         expect(board[2][3]).to eq(b_king)
       end

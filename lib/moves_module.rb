@@ -12,7 +12,7 @@ module MovesModule
                   :knight_down_right, :knight_down_left, :knight_left_down,
                   :knight_left_up, :knight_up_left]
 
-  def available_moves(board, last_move = nil, piece = self)
+  def available_moves(board, piece = self, last_move = nil)
     capture_array = []
     moves_array = []
     if [:bishop, :tower, :queen, :knight, :king].include?(piece.piece_type)
@@ -24,16 +24,14 @@ module MovesModule
     if piece.piece_type == :pawn
       
       raise StandardError "Last move cannot be nil for :pawn piece_type" if last_move.nil?
-      capture_array << pawn_normal_capture(board, piece.piece_position[0], piece.piece_position[1])
-      capture_array << en_passant_capture(board, last_move) unless last_move == []
-      moves_array << pawn_forward_move(board)
+      capture_array << pawn_normal_capture(board, piece)
+      capture_array << en_passant_capture(board, last_move, piece) unless last_move == []
+      moves_array << pawn_forward_move(board, piece)
     end
 
     if piece.piece_type == :king
       moves_array << castling
     end
-
-
     [moves_array.flatten(1), capture_array.flatten(1)]
     
   end
@@ -43,7 +41,7 @@ module MovesModule
     capture_squares_array = []
 
     directions.each do |direction| 
-      free_squares, capture_squares = moves_by_direction_q_t_b_kn_k(direction, board, piece.piece_position[0],  piece.piece_position[1]) # if [:bishop, :tower, :queen, :knight, :king].include?(self.piece_type)
+      free_squares, capture_squares = moves_by_direction_q_t_b_kn_k(direction, board, piece) 
       free_squares_array << free_squares
       capture_squares_array << capture_squares
     end
@@ -52,7 +50,11 @@ module MovesModule
   end
 
   #**
-  def moves_by_direction_q_t_b_kn_k(direction, board, row = self.piece_position[0], column = self.piece_position[1])
+  def moves_by_direction_q_t_b_kn_k(direction, board, piece)
+
+    piece_position = piece.piece_position
+    row = piece.piece_position[0]
+    column = piece.piece_position[1]
     free_squares = []
     capture_squares = []
 
@@ -61,16 +63,15 @@ module MovesModule
       column += direction_summands(direction)[1]
 
       break if same_color_piece?(row, column, board)
-      break capture_squares << [row, column, board[row][column]] if opponent_color_piece?(row, column, board) 
+      break capture_squares << [row, column, board[row][column]] if opponent_color_piece?(row, column, board, piece.color) 
 
       free_squares << [row, column] if board[row][column].nil?
-      break if self.piece_type == :knight || self.piece_type == :king
+      break if piece.piece_type == :knight || piece.piece_type == :king
     end
   
     [free_squares, capture_squares]
   end
 
-  #**
   def directions_piece_can_move(piece_type = self.piece_type)
     return DIAGONAL + STRAIGHT if piece_type == :queen || piece_type == :king
     return DIAGONAL if piece_type == :bishop
@@ -104,25 +105,31 @@ module MovesModule
   end
 
 #**
-  def pawn_normal_capture(board, row = self.piece_position[0], column = self.piece_position[1])
+  def pawn_normal_capture(board, piece = self)
     capture_array = []
 
+    row = piece.piece_position[0]
+    column = piece.piece_position[1]
+
     return [] if row == 8 || row == 0
-    if self.color == :white
-      capture_array << [row + 1, column + 1, board[row + 1][column + 1]] unless board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == self.color #  check_for_checks(row + 1, column + 1) ||
-      capture_array << [row + 1, column - 1, board[row + 1][column - 1]] unless board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == self.color #  check_for_checks(row + 1, column - 1) ||
+    if piece.color == :white
+      capture_array << [row + 1, column + 1, board[row + 1][column + 1]] unless board[row + 1][column + 1].nil? || board[row + 1][column + 1].color == piece.color #  check_for_checks(row + 1, column + 1) ||
+      capture_array << [row + 1, column - 1, board[row + 1][column - 1]] unless board[row + 1][column - 1].nil? || board[row + 1][column - 1].color == piece.color #  check_for_checks(row + 1, column - 1) ||
     end
 
-    if self.color == :black
-      capture_array << [row - 1, column + 1, board[row - 1][column + 1]] unless  board[row - 1][column + 1].nil? || board[row - 1][column + 1].color == self.color # check_for_checks(row + 1, column + 1) ||
-      capture_array << [row - 1, column - 1, board[row - 1][column - 1]] unless  board[row - 1][column - 1].nil? || board[row - 1][column - 1].color == self.color # check_for_checks(row + 1, column - 1) ||
+    if piece.color == :black
+      capture_array << [row - 1, column + 1, board[row - 1][column + 1]] unless  board[row - 1][column + 1].nil? || board[row - 1][column + 1].color == piece.color # check_for_checks(row + 1, column + 1) ||
+      capture_array << [row - 1, column - 1, board[row - 1][column - 1]] unless  board[row - 1][column - 1].nil? || board[row - 1][column - 1].color == piece.color # check_for_checks(row + 1, column - 1) ||
     end
     
     capture_array
   end
 
   #Pending to test  #**
-  def en_passant_capture(board, last_move, color = self.color, piece_position = self.piece_position)
+  def en_passant_capture(board, last_move, piece = self)
+
+    color = piece.color
+    piece_position = piece.piece_position
     
     pawn_to_eat_row = last_move[0][0]
     pawn_to_eat_column = last_move[0][1]
@@ -142,21 +149,23 @@ module MovesModule
       return false unless last_move[0][1] == piece_position[1] + 1 || last_move[0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
       return [5, pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
     end
-
     raise StandardError "en_passant_capture error"
   end
 
-  def pawn_forward_move(board = game.board, piece_position = self.piece_position)
-    moves_array = []
+  def pawn_forward_move(board, piece)
     
+    moves_array = []
+    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
-    if self.color == :white
+    color = piece.color
+
+    if color == :white
       moves_array << [row + 1, column] if board[row + 1][column].nil? 
       moves_array << [row + 2, column] if board[row + 1][column].nil? && board[row + 2][column].nil? && row == 1
     end
 
-    if self.color == :black
+    if color == :black
       moves_array << [row - 1, column] if board[row - 1][column].nil? &&  board[row - 1][column].nil? 
       moves_array << [row - 2, column] if board[row - 1][column].nil? && board[row - 2][column].nil? && row == 6
     end
@@ -164,34 +173,40 @@ module MovesModule
   end
 
     # I have to add a some "if class = King to certaing methods so it works"  #**
-  def castling_right?(board = game.board, piece_position = self.piece_position)
-    
+  def castling_right?(board = game.board, piece)
+
+    color = piece.color
+    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
 
-    return false unless check_for_checks(self.color, board, false).flatten[0].nil?
+    return false unless check_for_checks(color, board, false).flatten[0].nil?
     return false unless board[row][column].first_move == true && board[row][7]&.first_move == true
     return false unless board[row][column + 1 ].nil? && board[row][column + 2 ].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 1]).flatten[0].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column + 2]).flatten[0].nil?
+    return false unless check_for_checks(color,  board, mock = true, piece_position, [row, column + 1]).flatten[0].nil?
+    return false unless check_for_checks(color,  board, mock = true, piece_position, [row, column + 2]).flatten[0].nil?
     true   
   end
 
-  def castling_left?(board = game.board, piece_position = self.piece_position)
+  def castling_left?(board = game.board, piece)
 
+    color = piece.color
+    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
 
-    return false unless check_for_checks(self.color, board, false).flatten[0].nil?
+    return false unless check_for_checks(color, board, false).flatten[0].nil?
     return false unless board[row][column].first_move == true && board[row][0]&.first_move == true 
     return false unless board[row][column - 1 ].nil? && board[row][column - 2 ].nil?
     return false unless board[row][column - 3 ].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column - 1]).flatten[0].nil?
-    return false unless check_for_checks(self.color,  board, mock = true, piece_position, [row, column - 2]).flatten[0].nil?
+    return false unless check_for_checks(color,  board, mock = true, piece_position, [row, column - 1]).flatten[0].nil?
+    return false unless check_for_checks(color,  board, mock = true, piece_position, [row, column - 2]).flatten[0].nil?
     true   
   end
 
-  def castling(board = game.board, piece_position = self.piece_position)
+  def castling(board = game.board, piece)
+
+    piece_position = piece.piece_position
     
     castling_array = []
     
