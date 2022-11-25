@@ -22,5 +22,15 @@ class Pieces
       'E'
     end
   end
-  
+
+  def piece_position(board, piece = self)
+    position = []
+
+    board.each_with_index do |row, index_1|
+      row.each_with_index do |square, index_2|
+         return [[index_1, index_2], piece.color, piece.piece_type] if board[index_1][index_2] == piece
+      end
+    end
+    position
+  end
 end

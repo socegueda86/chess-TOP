@@ -160,7 +160,7 @@ RSpec.describe Pawn do
         last_move = [[3,7],:white, :knight]
 
         result = board[3][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
 
@@ -169,7 +169,7 @@ RSpec.describe Pawn do
         
         last_move = [[4,5], :black, :queen]
         result = board[4][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
 
@@ -179,7 +179,7 @@ RSpec.describe Pawn do
         last_move = [[3,6],:white, :pawn]
 
         result = board[3][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe Pawn do
         
         last_move = [[5,5], :black, :pawn]
         result = board[4][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
     
@@ -198,7 +198,7 @@ RSpec.describe Pawn do
         last_move = [[3,6],:black, :pawn]
   
         result = board[3][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
   
@@ -207,7 +207,7 @@ RSpec.describe Pawn do
           
         last_move = [[5,5], :white, :pawn]
         result = board[4][6].en_passant_capture(board, last_move)
-        expect(result).to be(false)
+        expect(result).to be(nil)
       end
     end
   end

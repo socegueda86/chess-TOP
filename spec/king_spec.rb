@@ -36,12 +36,12 @@ RSpec.describe King do
       end
   
       it "should return true to castling_right?" do
-        result = b_king.castling_right?(board, b_king)
+        result = b_king.castling_right?(b_king, board)
         expect(result).to be (true)
       end
 
       it "should return false to the castling_left?" do
-        result = b_king.castling_left?(board, b_king)
+        result = b_king.castling_left?(b_king, board)
         expect(result).to be (false)
       end
     end
@@ -57,13 +57,13 @@ RSpec.describe King do
       end
 
       it "should return true to castling_left?" do
-        result = w_king.castling_left?(board, w_king)
+        result = w_king.castling_left?(w_king, board)
         expect(result).to be (true)
       end
 
 
       it "should return true to castling_left?" do
-        result = w_king.castling_right?(board, w_king)
+        result = w_king.castling_right?(w_king, board)
         expect(result).to be (false)
       end
     end
@@ -85,22 +85,22 @@ RSpec.describe King do
       end
 
       it "should return false to castling_left?" do
-        result = w_king.castling_left?(board, w_king)
+        result = w_king.castling_left?(w_king, board)
         expect(result).to be (false)
       end
 
       it "should return false to castling_right?" do
-        result = w_king.castling_right?(board, w_king)
+        result = w_king.castling_right?(w_king, board)
         expect(result).to be (false)
       end
 
       it "should return false to castling_left?" do 
-        result = b_king.castling_left?(board, b_king)
+        result = b_king.castling_left?(b_king, board)
         expect(result).to be (false)
       end
 
       it "should return false to castling_right?" do
-        result = b_king.castling_right?(board, b_king)
+        result = b_king.castling_right?(b_king, board)
         expect(result).to be (false)
       end
     end
@@ -122,22 +122,22 @@ RSpec.describe King do
       end
 
       it "should return false to castling_left?" do
-        result = w_king.castling_left?(board, w_king)
+        result = w_king.castling_left?(w_king, board)
         expect(result).to be (true)
       end
 
       it "should return false to castling_right?" do
-        result = w_king.castling_right?(board, w_king)
+        result = w_king.castling_right?(w_king, board)
         expect(result).to be (false)
       end
 
       it "should return false to castling_left?" do  
-        result = b_king.castling_left?(board, b_king)
+        result = b_king.castling_left?(b_king, board)
         expect(result).to be (true)
       end
 
       it "should return false to castling_right?" do
-        result = b_king.castling_right?(board, b_king)
+        result = b_king.castling_right?(b_king, board)
         expect(result).to be (false)
         
       end

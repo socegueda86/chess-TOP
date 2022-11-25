@@ -30,7 +30,7 @@ module MovesModule
     end
 
     if piece.piece_type == :king
-      moves_array << castling
+      moves_array << castling(piece, board)
     end
     [moves_array.flatten(1), capture_array.flatten(1)]
     
@@ -50,11 +50,10 @@ module MovesModule
   end
 
   #**
-  def moves_by_direction_q_t_b_kn_k(direction, board, piece)
+  def moves_by_direction_q_t_b_kn_k(direction, board, piece, piece_position = piece.piece_position)
 
-    piece_position = piece.piece_position
-    row = piece.piece_position[0]
-    column = piece.piece_position[1]
+    row = piece_position[0]
+    column = piece_position[1]
     free_squares = []
     capture_squares = []
 
@@ -105,11 +104,11 @@ module MovesModule
   end
 
 #**
-  def pawn_normal_capture(board, piece = self)
+  def pawn_normal_capture(board, piece = self, piece_position = piece.piece_position)
     capture_array = []
 
-    row = piece.piece_position[0]
-    column = piece.piece_position[1]
+    row = piece_position[0]
+    column = piece_position[1]
 
     return [] if row == 8 || row == 0
     if piece.color == :white
@@ -126,36 +125,33 @@ module MovesModule
   end
 
   #Pending to test  #**
-  def en_passant_capture(board, last_move, piece = self)
+  def en_passant_capture(board, last_move, piece = self, piece_position = piece.piece_position)
 
     color = piece.color
-    piece_position = piece.piece_position
-    
     pawn_to_eat_row = last_move[0][0]
     pawn_to_eat_column = last_move[0][1]
     
     if color == :black
-      return false unless piece_position[0] == 3 # checks if self pawn is inte correc row to use en passant
-      return false unless last_move[2] == :pawn && last_move[1] == :white # checks if both pieces are pawns and if they have opposite colors
-      return false unless last_move[0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
-      return false unless last_move[0][1] == piece_position[1] + 1 || last_move[0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      return unless piece_position[0] == 3 # checks if self pawn is inte correc row to use en passant
+      return unless last_move[2] == :pawn && last_move[1] == :white # checks if both pieces are pawns and if they have opposite colors
+      return unless last_move[0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return unless last_move[0][1] == piece_position[1] + 1 || last_move[0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
       return [2 , pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
     end
 
     if color == :white
-      return false unless piece_position[0] == 4 # checks if self pawn is inte correc row to use en passant
-      return false unless last_move[2] == :pawn && last_move[1] == :black # checks if both pieces are pawns and if they have opposite colors
-      return false unless last_move[0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
-      return false unless last_move[0][1] == piece_position[1] + 1 || last_move[0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
+      return unless piece_position[0] == 4 # checks if self pawn is inte correc row to use en passant
+      return unless last_move[2] == :pawn && last_move[1] == :black # checks if both pieces are pawns and if they have opposite colors
+      return unless last_move[0][0] == piece_position[0] # checks if pawns are on the same row and if it was the last move
+      return unless last_move[0][1] == piece_position[1] + 1 || last_move[0][1] == piece_position[1] - 1 #checks if opponents pawn is on the correct column and if it was the last move
       return [5, pawn_to_eat_column, board[pawn_to_eat_row][pawn_to_eat_column]]
     end
     raise StandardError "en_passant_capture error"
   end
 
-  def pawn_forward_move(board, piece)
+  def pawn_forward_move(board, piece, piece_position = piece.piece_position)
     
     moves_array = []
-    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
     color = piece.color
@@ -173,10 +169,9 @@ module MovesModule
   end
 
     # I have to add a some "if class = King to certaing methods so it works"  #**
-  def castling_right?(board = game.board, piece)
+  def castling_right?(piece, board = game.board, piece_position = piece.piece_position)
 
     color = piece.color
-    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
 
@@ -188,10 +183,9 @@ module MovesModule
     true   
   end
 
-  def castling_left?(board = game.board, piece)
+  def castling_left?(piece, board = game.board, piece_position = piece.piece_position)
 
     color = piece.color
-    piece_position = piece.piece_position
     row = piece_position[0]
     column = piece_position[1]
 
@@ -204,14 +198,12 @@ module MovesModule
     true   
   end
 
-  def castling(board = game.board, piece)
+  def castling(piece, board = game.board, piece_position = piece.piece_position)
 
-    piece_position = piece.piece_position
-    
     castling_array = []
     
-    castling_array << [ piece_position[0], piece_position[1] + 2, :castling_right ] if castling_right?(board, piece_position)
-    castling_array << [ piece_position[0], piece_position[1] - 2, :castling_left ] if castling_left?(board, piece_position)
+    castling_array << [ piece_position[0], piece_position[1] + 2, :castling_right ] if castling_right?(piece, board, piece_position) 
+    castling_array << [ piece_position[0], piece_position[1] - 2, :castling_left ] if castling_left?(piece, board, piece_position)
     castling_array
   end
 end
